@@ -1,3 +1,4 @@
+using JPT.Core.Features.Jobs;
 using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
@@ -16,6 +17,12 @@ public sealed class Company
     public Guid? LogoId { get; private set; }
     public File? Logo { get; private set; }
 
+    /// <summary>
+    /// List jobs of this company.
+    /// </summary>
+    private readonly List<Job> _jobs = [];
+    
+    public IReadOnlyList<Job> Jobs => _jobs.ToList();
     public static Company CreateCompany(string name, string? description, Guid userId, Guid? logoId)
     {
         return new Company

@@ -1,5 +1,6 @@
 using JPT.Core.Common;
 using JPT.Core.Features.Countries;
+using JPT.Core.Features.Users;
 
 namespace JPT.Core.Features.Jobs;
 
@@ -14,7 +15,7 @@ public sealed class Job : IDateTracking, ISoftDelete
     public decimal? MinSalary { get; private set; }
     public decimal? MaxSalary { get; private set; }
 
-    public JobType JobType { get; private set; }
+    public JobType Type { get; private set; }
 
     public JobStatus Status { get; private set; } = JobStatus.Active;
     
@@ -30,15 +31,28 @@ public sealed class Job : IDateTracking, ISoftDelete
     /// <summary>
     /// Belongs to one city.
     /// </summary>
-    public Guid CityId { get; private set; }
+    public int CityId { get; private set; }
     public City City { get; private set; } = null!;
+        
+    /// <summary>
+    /// This post is created by company.
+    /// </summary>
+    public Guid CompanyId { get; private set; }
+    public Company Company { get; private set; } = null!;
+    
+    /// <summary>
+    /// List applications of this user.
+    /// </summary>
+    private readonly List<JobApplication> _jobApplications = [];
+    
+    public IReadOnlyList<JobApplication> JobApplications => _jobApplications.ToList();
 
     private Job()
     {
         
     }
 
-    public static Job CreateJob(string title, string? description, string? requirements, decimal? minSalary, decimal? maxSalary, int jobCategoryId, JobType jobType, Guid cityId)
+    public static Job CreateJob(string title, string? description, string? requirements, decimal? minSalary, decimal? maxSalary, int jobCategoryId, Guid companyId, JobType type, int cityId)
     {
         return new Job
         {
@@ -47,8 +61,9 @@ public sealed class Job : IDateTracking, ISoftDelete
             Requirements = requirements,
             MinSalary = minSalary,
             MaxSalary = maxSalary,
-            JobType = jobType,
+            Type = type,
             JobCategoryId = jobCategoryId,
+            CompanyId = companyId,
             CityId = cityId,
         };
     }

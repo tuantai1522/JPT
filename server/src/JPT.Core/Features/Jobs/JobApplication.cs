@@ -19,9 +19,6 @@ public sealed class JobApplication
 
     public JobApplicationStatus Status { get; private set; } = JobApplicationStatus.Applied;
     
-    public bool IsDeleted { get; set; }
-    public long? DeletedAt { get; set; }
-
     private JobApplication()
     {
         

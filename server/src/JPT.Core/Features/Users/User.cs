@@ -1,4 +1,5 @@
 using JPT.Core.Common;
+using JPT.Core.Features.Jobs;
 using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
@@ -31,6 +32,27 @@ public sealed class User : IDateTracking, IAggregateRoot
     
     public File? Avatar { get; private set; }
     public Guid? AvatarId { get; private set; }
+    
+    /// <summary>
+    /// List saved jobs of this user.
+    /// </summary>
+    private readonly List<SavedJob> _savedJobs = [];
+    
+    public IReadOnlyList<SavedJob> SavedJobs => _savedJobs.ToList();
+    
+    /// <summary>
+    /// List applications of this user.
+    /// </summary>
+    private readonly List<JobApplication> _jobApplications = [];
+    
+    public IReadOnlyList<JobApplication> JobApplications => _jobApplications.ToList();
+    
+    /// <summary>
+    /// List cvs of this user.
+    /// </summary>
+    private readonly List<Cv> _cv = [];
+    
+    public IReadOnlyList<Cv> Cv => _cv.ToList();
 
     private User()
     {
