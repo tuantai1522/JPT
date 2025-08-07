@@ -1,4 +1,5 @@
 using JPT.Core.Common;
+using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
 
@@ -27,13 +28,16 @@ public sealed class User : IDateTracking, IAggregateRoot
     public Company? Company { get; private set; }
     
     public UserRole Role { get; set; } = UserRole.Employee;
+    
+    public File? Avatar { get; private set; }
+    public Guid? AvatarId { get; private set; }
 
     private User()
     {
         
     }
     
-    public static User CreateUser(string firstName, string? middleName, string? lastName, string? description, string email, string hashPassword, UserRole role)
+    public static User CreateUser(string firstName, string? middleName, string? lastName, string? description, string email, string hashPassword, Guid avatarId, UserRole role)
     {
         return new User
         {
@@ -43,6 +47,7 @@ public sealed class User : IDateTracking, IAggregateRoot
             Description = description,
             Email = email,
             HashPassword = hashPassword,
+            AvatarId = avatarId,
             Role = role,
         };
     }

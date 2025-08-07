@@ -7,6 +7,7 @@ public sealed class City
     public string Name { get; private set; } = null!;
     
     public Guid CountryId { get; private set; }
+    public Country Country { get; private set; } = null!;
 
     private City()
     {

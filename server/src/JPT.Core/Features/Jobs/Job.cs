@@ -1,4 +1,5 @@
 using JPT.Core.Common;
+using JPT.Core.Features.Countries;
 
 namespace JPT.Core.Features.Jobs;
 
@@ -25,14 +26,19 @@ public sealed class Job : IDateTracking, ISoftDelete
     
     public bool IsDeleted { get; set; }
     public long? DeletedAt { get; set; }
+    
+    /// <summary>
+    /// Belongs to one city.
+    /// </summary>
+    public Guid CityId { get; private set; }
+    public City City { get; private set; } = null!;
 
     private Job()
     {
         
     }
 
-    public static Job CreateJob(string title, string? description, string? requirements, decimal? minSalary,
-        decimal? maxSalary, int jobCategoryId, JobType jobType)
+    public static Job CreateJob(string title, string? description, string? requirements, decimal? minSalary, decimal? maxSalary, int jobCategoryId, JobType jobType, Guid cityId)
     {
         return new Job
         {
@@ -42,7 +48,8 @@ public sealed class Job : IDateTracking, ISoftDelete
             MinSalary = minSalary,
             MaxSalary = maxSalary,
             JobType = jobType,
-            JobCategoryId = jobCategoryId
+            JobCategoryId = jobCategoryId,
+            CityId = cityId,
         };
     }
 }
