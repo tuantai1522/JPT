@@ -4,8 +4,8 @@ namespace JPT.Core.Features.Users;
 
 public sealed class SavedJob
 {
-    public Guid UserId { get; init; }
-    public User User { get; init; } = null!;
+    public Guid ApplicantId { get; init; }
+    public User Applicant { get; init; } = null!;
     
     public Guid JobId { get; init; }
     public Job Job { get; init; } = null!;
@@ -15,11 +15,11 @@ public sealed class SavedJob
         
     }
 
-    public static SavedJob CreateSavedJob(Guid userId, Guid jobId)
+    public static SavedJob CreateSavedJob(Guid applicantId, Guid jobId)
     {
         return new SavedJob
         {
-            UserId = userId,
+            ApplicantId = applicantId,
             JobId = jobId,
         };
     }

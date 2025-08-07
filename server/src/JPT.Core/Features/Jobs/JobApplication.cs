@@ -6,8 +6,8 @@ public sealed class JobApplication
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 
-    public Guid UserId { get; init; }
-    public User User { get; init; } = null!;
+    public Guid ApplicantId { get; init; }
+    public User Applicant { get; init; } = null!;
     
     public Guid JobId { get; init; }
     public Job Job { get; init; } = null!;
@@ -24,11 +24,11 @@ public sealed class JobApplication
         
     }
 
-    public static JobApplication CreateJobApplication(Guid userId, Guid jobId, Guid cvId)
+    public static JobApplication CreateJobApplication(Guid applicantId, Guid jobId, Guid cvId)
     {
         return new JobApplication
         {
-            UserId = userId,
+            ApplicantId = applicantId,
             JobId = jobId,
             CvId = cvId
         };

@@ -6,7 +6,7 @@ public sealed class City
 
     public string Name { get; private set; } = null!;
     
-    public Guid CountryId { get; private set; }
+    public int CountryId { get; private set; }
     public Country Country { get; private set; } = null!;
 
     private City()
@@ -14,7 +14,7 @@ public sealed class City
         
     }
 
-    public static City Create(string name, Guid countryId)
+    public static City Create(string name, int countryId)
     {
         return new City
         {

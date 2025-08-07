@@ -11,8 +11,8 @@ public sealed class Company
     
     public string? Description { get; private set; }
     
-    public Guid UserId { get; private set; }
-    public User User { get; private set; } = null!;
+    public Guid EmployerId { get; private set; }
+    public User Employer { get; private set; } = null!;
     
     public Guid? LogoId { get; private set; }
     public File? Logo { get; private set; }
@@ -23,13 +23,13 @@ public sealed class Company
     private readonly List<Job> _jobs = [];
     
     public IReadOnlyList<Job> Jobs => _jobs.ToList();
-    public static Company CreateCompany(string name, string? description, Guid userId, Guid? logoId)
+    public static Company CreateCompany(string name, string? description, Guid employerId, Guid? logoId)
     {
         return new Company
         {
             Name = name,
             Description = description,
-            UserId = userId,
+            EmployerId = employerId,
             LogoId = logoId,
         };
     }
