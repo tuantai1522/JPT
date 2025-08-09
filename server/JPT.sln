@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPT.Infrastructure", "src\J
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPT.Web", "src\JPT.Web\JPT.Web.csproj", "{23A62A2F-C0EF-4469-9372-8A0C026DD207}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPT.UseCases", "src\JPT.UseCases\JPT.UseCases.csproj", "{316B5113-777E-4456-B14A-F30D05510EC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,5 +34,13 @@ Global
 		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BE649C-2246-4536-A47C-9953399B653F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BE649C-2246-4536-A47C-9953399B653F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BE649C-2246-4536-A47C-9953399B653F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BE649C-2246-4536-A47C-9953399B653F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{316B5113-777E-4456-B14A-F30D05510EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{316B5113-777E-4456-B14A-F30D05510EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{316B5113-777E-4456-B14A-F30D05510EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{316B5113-777E-4456-B14A-F30D05510EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
