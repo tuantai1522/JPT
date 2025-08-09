@@ -59,19 +59,25 @@ public sealed class User : IDateTracking, IAggregateRoot
         
     }
     
-    public static User CreateUser(string firstName, string? middleName, string? lastName, string? description, string email, string hashPassword, Guid avatarId, UserRole role)
+    public static User CreateUser(string firstName, string? middleName, string? lastName, string email, string hashPassword, Guid? avatarId, UserRole role, string companyName, Guid? logoId)
     {
-        return new User
+        var user =  new User
         {
             FirstName = firstName,
             MiddleName = middleName,
             LastName = lastName,
-            Description = description,
             Email = email,
             HashPassword = hashPassword,
             AvatarId = avatarId,
             Role = role,
         };
+
+        if (role == UserRole.JobSeeker)
+        {
+            user.Company = Company.CreateCompany(companyName, user.Id, logoId);
+        }
+
+        return user;
     }
 
 }

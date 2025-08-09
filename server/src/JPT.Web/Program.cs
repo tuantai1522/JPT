@@ -1,3 +1,4 @@
+using System.Reflection;
 using JPT.Infrastructure;
 using JPT.UseCases;
 using JPT.Web;
@@ -12,13 +13,20 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddWeb();
 
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
 var app = builder.Build();
+
+app.MapEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerWithUi();
 }
+
+// Use global custom exception handler
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

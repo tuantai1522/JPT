@@ -1,6 +1,8 @@
 using System.Text;
+using JPT.Core.Features.Users;
 using JPT.Infrastructure.Authentication;
 using JPT.Infrastructure.Database;
+using JPT.Infrastructure.Repositories;
 using JPT.UseCases.Abstractions.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,7 @@ public static class DependencyInjection
         this IServiceCollection services, IConfiguration configuration) =>
         services
             .AddDatabase(configuration)
+            .AddRepositories()
             .AddAuthenticationInternal(configuration);
     
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -28,6 +31,14 @@ public static class DependencyInjection
                 .UseNpgsql(connectionString, npgsqlOptions =>
                     npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
                 .UseSnakeCaseNamingConvention());
+
+        return services;
+    }
+    
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services
+            .AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
