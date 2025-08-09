@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPT.Core", "src\JPT.Core\JPT.Core.csproj", "{FB3F851E-694B-4555-80D0-C4E3D4F86110}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPT.Infrastructure", "src\JPT.Infrastructure\JPT.Infrastructure.csproj", "{F74CA299-560F-48C7-96D5-EC9FCE5FB8EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPT.Web", "src\JPT.Web\JPT.Web.csproj", "{23A62A2F-C0EF-4469-9372-8A0C026DD207}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,5 +20,17 @@ Global
 		{FB3F851E-694B-4555-80D0-C4E3D4F86110}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB3F851E-694B-4555-80D0-C4E3D4F86110}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB3F851E-694B-4555-80D0-C4E3D4F86110}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74CA299-560F-48C7-96D5-EC9FCE5FB8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74CA299-560F-48C7-96D5-EC9FCE5FB8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74CA299-560F-48C7-96D5-EC9FCE5FB8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74CA299-560F-48C7-96D5-EC9FCE5FB8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B65A2F5D-6760-4D0A-88A0-0DBAD1611ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B65A2F5D-6760-4D0A-88A0-0DBAD1611ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B65A2F5D-6760-4D0A-88A0-0DBAD1611ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B65A2F5D-6760-4D0A-88A0-0DBAD1611ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A62A2F-C0EF-4469-9372-8A0C026DD207}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

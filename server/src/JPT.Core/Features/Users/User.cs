@@ -20,7 +20,7 @@ public sealed class User : IDateTracking, IAggregateRoot
     public string Email { get; private set; } = null!;
     public string HashPassword { get; private set; } = null!;
 
-    public long CreatedAt { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    public long CreatedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public long? UpdatedAt { get; private set; }
 
     /// <summary>
@@ -50,9 +50,9 @@ public sealed class User : IDateTracking, IAggregateRoot
     /// <summary>
     /// List cvs of this user.
     /// </summary>
-    private readonly List<Cv> _cv = [];
+    private readonly List<Cv> _cvs = [];
     
-    public IReadOnlyList<Cv> Cv => _cv.ToList();
+    public IReadOnlyList<Cv> Cvs => _cvs.ToList();
 
     private User()
     {

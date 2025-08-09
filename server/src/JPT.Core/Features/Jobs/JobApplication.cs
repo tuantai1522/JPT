@@ -1,4 +1,5 @@
 using JPT.Core.Features.Users;
+using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Jobs;
 
@@ -12,10 +13,10 @@ public sealed class JobApplication
     public Guid JobId { get; init; }
     public Job Job { get; init; } = null!;
 
-    public long AppliedAt { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    public long AppliedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     
     public Guid CvId { get; init; }
-    public Cv Cv { get; init; } = null!;
+    public File Cv { get; init; } = null!;
 
     public JobApplicationStatus Status { get; private set; } = JobApplicationStatus.Applied;
     

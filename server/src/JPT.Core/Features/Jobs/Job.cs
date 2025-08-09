@@ -21,8 +21,8 @@ public sealed class Job : IDateTracking, ISoftDelete
     
     public int JobCategoryId { get; private set; }
     public JobCategory JobCategory { get; private set; } = null!;
-    
-    public long CreatedAt { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+    public long CreatedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public long? UpdatedAt { get; private set; }
     
     public bool IsDeleted { get; set; }
