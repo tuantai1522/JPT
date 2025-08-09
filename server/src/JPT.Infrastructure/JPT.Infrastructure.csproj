@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\JPT.Core\JPT.Core.csproj" />
+      <ProjectReference Include="..\JPT.UseCases\JPT.UseCases.csproj" />
     </ItemGroup>
 
 </Project>
