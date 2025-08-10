@@ -1,16 +1,22 @@
 using System.Text;
+using FluentValidation;
 using JPT.Core.Features.Countries;
+using JPT.Core.Features.Files;
 using JPT.Core.Features.Users;
 using JPT.Infrastructure.Authentication;
 using JPT.Infrastructure.Database;
+using JPT.Infrastructure.Options;
+using JPT.Infrastructure.Options.Files;
 using JPT.Infrastructure.Repositories;
 using JPT.UseCases.Abstractions.Authentication;
+using JPT.UseCases.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using FileOptions = JPT.Infrastructure.Options.Files.FileOptions;
 
 namespace JPT.Infrastructure;
 
@@ -21,7 +27,8 @@ public static class DependencyInjection
         services
             .AddDatabase(configuration)
             .AddRepositories()
-            .AddAuthenticationInternal(configuration);
+            .AddAuthenticationInternal(configuration)
+            .AddOptionSettings(configuration);
     
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
@@ -71,6 +78,18 @@ public static class DependencyInjection
         
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddOptionSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var assembly = typeof(DependencyInjection).Assembly;
+
+        services.AddSingleton<IFileOptions, FileOptionsProvider>();
+        services.AddOptionsWithFluentValidation<FileOptions>(nameof(FileOptions));
+        
+        services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
 
         return services;
     }
