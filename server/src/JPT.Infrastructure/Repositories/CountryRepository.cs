@@ -18,12 +18,11 @@ public sealed class CountryRepository(ApplicationDbContext context) : ICountryRe
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyList<City>> GetCitiesByCountryId(int countryId, CancellationToken cancellationToken)
+    public async Task<Country?> GetCountryById(int countryId, CancellationToken cancellationToken)
     {
         return await _context.Countries
             .AsNoTracking()
-            .SelectMany(x => x.Cities)
-            .Where(city => city.CountryId == countryId)
-            .ToListAsync(cancellationToken);
+            .Include(country => country.Cities.Where(city => city.CountryId == countryId))
+            .FirstOrDefaultAsync(country => country.Id == countryId, cancellationToken);
     }
 }
