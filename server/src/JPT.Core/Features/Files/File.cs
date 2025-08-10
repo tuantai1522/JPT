@@ -10,17 +10,25 @@ public class File : IAggregateRoot
 
     public string Path { get; private set; } = null!;
 
+    public long UploadedAt { get; private set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+    public UploadFileType UploadType { get; private set; } = UploadFileType.LocalHost;
+
+    public string MimeType { get; private set; } = null!;
+
     private File()
     {
         
     }
 
-    public static File CreateFile(string? name, string path)
+    public static File CreateFile(string? name, string path, UploadFileType uploadType, string mimeType)
     {
         return new File
         {
             Name = name,
-            Path = path
+            Path = path,
+            MimeType = mimeType,
+            UploadType = uploadType
         };
     }
 }
