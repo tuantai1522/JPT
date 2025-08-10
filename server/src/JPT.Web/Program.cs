@@ -17,6 +17,8 @@ builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
+app.UseUploadsStaticFiles();
+
 app.MapEndpoints();
 
 // Configure the HTTP request pipeline.

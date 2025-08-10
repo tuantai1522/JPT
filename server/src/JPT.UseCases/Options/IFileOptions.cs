@@ -5,7 +5,6 @@ namespace JPT.UseCases.Options;
 public interface IFileOptions
 {
     UploadFileType DefaultUploadFile { get;}
-    string FirebaseUrl { get;}
+    string FirebaseStorageUrl { get;}
     string FirebaseBucketName { get;}
-    string LocalhostUrl { get;}
 }

@@ -5,10 +5,12 @@ using JPT.Core.Features.Files;
 using JPT.Core.Features.Users;
 using JPT.Infrastructure.Authentication;
 using JPT.Infrastructure.Database;
+using JPT.Infrastructure.Files;
 using JPT.Infrastructure.Options;
 using JPT.Infrastructure.Options.Files;
 using JPT.Infrastructure.Repositories;
 using JPT.UseCases.Abstractions.Authentication;
+using JPT.UseCases.Abstractions.Files;
 using JPT.UseCases.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +30,9 @@ public static class DependencyInjection
             .AddDatabase(configuration)
             .AddRepositories()
             .AddAuthenticationInternal(configuration)
-            .AddOptionSettings(configuration);
+            .AddAuthorizationInternal()
+            .AddOptionSettings()
+            .AddFileExplorer();
     
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
@@ -82,7 +86,14 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddOptionSettings(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuthorizationInternal(this IServiceCollection services)
+    {
+        services.AddAuthorization();
+
+        return services;
+    }
+
+    private static IServiceCollection AddOptionSettings(this IServiceCollection services)
     {
         var assembly = typeof(DependencyInjection).Assembly;
 
@@ -90,6 +101,14 @@ public static class DependencyInjection
         services.AddOptionsWithFluentValidation<FileOptions>(nameof(FileOptions));
         
         services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
+
+        return services;
+    }
+    
+    private static IServiceCollection AddFileExplorer(this IServiceCollection services)
+    {
+        services.AddScoped<IFileUrlResolver, FileUrlResolver>();
+        services.AddScoped<IFileExplorerContext, LocalhostExplorerContext>();
 
         return services;
     }

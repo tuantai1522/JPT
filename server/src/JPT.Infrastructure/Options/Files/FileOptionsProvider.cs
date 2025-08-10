@@ -7,9 +7,8 @@ namespace JPT.Infrastructure.Options.Files
     public sealed class FileOptionsProvider(IOptionsMonitor<FileOptions> fileOptions) : IFileOptions
     {
         public UploadFileType DefaultUploadFile => fileOptions.CurrentValue.DefaultUploadFile;
-        public string FirebaseUrl => fileOptions.CurrentValue.FirebaseUrl;
+        public string FirebaseStorageUrl => fileOptions.CurrentValue.FirebaseStorageUrl;
         public string FirebaseBucketName => fileOptions.CurrentValue.FirebaseBucketName;
-        public string LocalhostUrl => fileOptions.CurrentValue.LocalhostUrl;
     }
 }
 

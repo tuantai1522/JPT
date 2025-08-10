@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Abstractions\" />
       <Folder Include="Features\Countries\" />
       <Folder Include="Mappers\" />
     </ItemGroup>
