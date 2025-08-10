@@ -1,4 +1,5 @@
 using System.Text;
+using JPT.Core.Features.Countries;
 using JPT.Core.Features.Users;
 using JPT.Infrastructure.Authentication;
 using JPT.Infrastructure.Database;
@@ -38,6 +39,7 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services
+            .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IUserRepository, UserRepository>();
 
         return services;
