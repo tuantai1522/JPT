@@ -50,6 +50,7 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services
+            .AddScoped<IFileRepository, FileRepository>()
             .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IUserRepository, UserRepository>();
 
