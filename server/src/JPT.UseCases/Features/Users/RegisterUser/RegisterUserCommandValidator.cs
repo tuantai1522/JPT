@@ -17,7 +17,7 @@ internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterU
             .NotEmpty().WithMessage("Password can not be empty.");
         
         RuleFor(x => x.Role)
-            .IsInEnum().WithMessage("Role must be 'Employee' or 'JobSeeker'.");
+            .IsInEnum().WithMessage("Role must be 'Employer' or 'JobSeeker'.");
         
         RuleFor(x => x.CompanyName)
             .NotEmpty()

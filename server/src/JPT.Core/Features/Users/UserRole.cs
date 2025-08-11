@@ -5,6 +5,6 @@ namespace JPT.Core.Features.Users;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum UserRole
 {
-    Employee = 0,
+    Employer = 0,
     JobSeeker = 1
 }

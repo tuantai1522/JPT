@@ -25,9 +25,17 @@ public sealed class Job : IDateTracking, ISoftDelete
     public long CreatedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public long? UpdatedAt { get; private set; }
     
-    public bool IsDeleted { get; set; }
-    public long? DeletedAt { get; set; }
-    
+    public bool IsDeleted { get; private set; }
+    public long? DeletedAt { get; private set; }
+    public void Delete()
+    {
+        if (!IsDeleted)
+        {
+            IsDeleted = true;
+            DeletedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+    }
+
     /// <summary>
     /// Belongs to one city.
     /// </summary>

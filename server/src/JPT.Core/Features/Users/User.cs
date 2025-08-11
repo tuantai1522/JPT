@@ -28,7 +28,7 @@ public sealed class User : IDateTracking, IAggregateRoot
     /// </summary>
     public Company? Company { get; private set; }
     
-    public UserRole Role { get; set; } = UserRole.Employee;
+    public UserRole Role { get; set; } = UserRole.Employer;
     
     public File? Avatar { get; private set; }
     public Guid? AvatarId { get; private set; }

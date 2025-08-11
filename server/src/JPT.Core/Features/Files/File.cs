@@ -2,7 +2,7 @@ using JPT.Core.Common;
 
 namespace JPT.Core.Features.Files;
 
-public class File : IAggregateRoot
+public class File : IAggregateRoot, ISoftDelete
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 
@@ -15,7 +15,7 @@ public class File : IAggregateRoot
     public UploadFileType UploadType { get; private set; } = UploadFileType.LocalHost;
 
     public string MimeType { get; private set; } = null!;
-
+    
     private File()
     {
         
@@ -30,5 +30,17 @@ public class File : IAggregateRoot
             MimeType = mimeType,
             UploadType = uploadType
         };
+    }
+
+    public bool IsDeleted { get; private set; }
+    public long? DeletedAt { get; private set; }
+
+    public void Delete()
+    {
+        if (!IsDeleted)
+        {
+            IsDeleted = true;
+            DeletedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
     }
 }
