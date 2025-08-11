@@ -33,4 +33,11 @@ public sealed class Company
         };
     }
 
+    public void UpdateCompany(string name, string? description, Guid? logoId)
+    {
+        Name = name;
+        Description = description;
+        LogoId = logoId;
+    }
+
 }

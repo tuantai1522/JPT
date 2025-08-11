@@ -21,7 +21,7 @@ internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterU
         
         RuleFor(x => x.CompanyName)
             .NotEmpty()
-            .WithMessage("Company Name is required when registered with JobSeeker role.")
-            .When(x => x.Role == UserRole.JobSeeker);
+            .WithMessage("Company Name is required when registered with Employer role.")
+            .When(x => x.Role == UserRole.Employer);
     }
 }

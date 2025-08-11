@@ -80,4 +80,31 @@ public sealed class User : IDateTracking, IAggregateRoot
         return user;
     }
 
+    public void UpdateUser(string firstName, string? middleName, string? lastName, Guid? avatarId, string companyName, string? companyDescription, Guid? logoId)
+    {
+        FirstName = firstName;
+        MiddleName = middleName;
+        LastName = lastName;
+
+        // Delete old avatar
+        if (avatarId != null && Avatar != null && avatarId != AvatarId)
+        {
+            Avatar.Delete();
+        }
+        
+        AvatarId = avatarId;
+
+        // Only employer can update company information
+        if (Role == UserRole.Employer && Company != null)
+        {
+            // Delete old logo
+            if (Company.Logo != null && Company.LogoId != null && Company.LogoId != logoId)
+            {
+                Company.Logo.Delete();
+            }
+            
+            Company.UpdateCompany(companyName, companyDescription, logoId);
+        }
+    }
+
 }
