@@ -1,4 +1,5 @@
 ﻿using JPT.Core.Common;
+using JPT.Core.Features.Files;
 using JPT.Core.Features.Users;
 using JPT.UseCases.Abstractions.Authentication;
 using MediatR;
@@ -7,6 +8,7 @@ namespace JPT.UseCases.Features.Users.AddCv;
 
 internal sealed class AddCvCommandHandler(
     IUserProvider userProvider,
+    IFileRepository fileRepository,
     IUserRepository userRepository) : IRequestHandler<AddCvCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> Handle(AddCvCommand command, CancellationToken cancellationToken)
@@ -18,6 +20,13 @@ internal sealed class AddCvCommandHandler(
         if (user is null)
         {
             return Result.Failure<Guid>(UserErrors.NotFound(userId));
+        }
+        
+        var file = await fileRepository.GetFileByIdAsync(command.FileId, cancellationToken);
+        
+        if (file is null || file.IsDeleted)
+        {
+            return Result.Failure<Guid>(FileErrors.NotFound(command.FileId));
         }
 
         var cv = Cv.CreateCv(userId, command.FileId);

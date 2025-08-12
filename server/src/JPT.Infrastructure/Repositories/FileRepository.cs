@@ -1,6 +1,8 @@
+using System.Linq.Expressions;
 using JPT.Core.Common;
 using JPT.Core.Features.Files;
 using JPT.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Infrastructure.Repositories;
@@ -17,5 +19,18 @@ public sealed class FileRepository(ApplicationDbContext context) : IFileReposito
         
         return result.Entity;
         
+    }
+
+    public async Task<File?> GetFileByIdAsync(Guid fileId, CancellationToken cancellationToken, params Expression<Func<File, object?>>[]? includeProperties)
+    {
+        var query = _context.Files.AsSplitQuery().Where(x => x.Id == fileId);
+
+        // Apply the include logic dynamically using the provided Func
+        if (includeProperties != null)
+        {
+            query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        }
+
+        return await query.FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 }

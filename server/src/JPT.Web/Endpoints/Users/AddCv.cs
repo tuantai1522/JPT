@@ -7,16 +7,14 @@ namespace JPT.Web.Endpoints.Users;
 
 internal sealed class AddCv : IEndpoint
 {
-    private sealed record Request(Guid FileId);
-    
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/add-cv", async (
-            Request request,
+        app.MapPost("users/cvs/{fileId:guid}", async (
+            Guid fileId,
             IMediator mediator,
             CancellationToken cancellationToken) =>
         {
-            var command = new AddCvCommand(request.FileId);
+            var command = new AddCvCommand(fileId);
 
             var result = await mediator.Send(command, cancellationToken);
 
