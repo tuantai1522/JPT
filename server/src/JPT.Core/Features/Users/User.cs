@@ -129,4 +129,21 @@ public sealed class User : IDateTracking, IAggregateRoot
         return Result.Success();
     }
 
+    public Result RemoveCv(Guid cvToRemoveId)
+    {
+        var cv = _cvs.FirstOrDefault(cv => cv.CvId == cvToRemoveId);
+
+        if (cv is null)
+        {
+            return Result.Failure(UserErrors.CanNotFindCvOfThisUser);
+        }
+
+        _cvs.Remove(cv);
+            
+        // Remove this cv (mark inactive)
+        cv.File.Delete();
+        
+        return Result.Success();
+    }
+
 }

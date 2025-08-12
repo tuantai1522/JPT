@@ -39,4 +39,8 @@ public static class UserErrors
     public static readonly Error EmployerCanNotAddNewCv = Error.Validation(
         "Users.EmployerCanNotAddNewCv",
         $"Only Job seeker can add new CV. Please try again.");
+    
+    public static readonly Error CanNotFindCvOfThisUser = Error.NotFound(
+        "Users.CanNotFindCvOfThisUser",
+        $"Can not find CV of this user. Please try again.");
 }
