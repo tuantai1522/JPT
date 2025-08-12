@@ -107,4 +107,26 @@ public sealed class User : IDateTracking, IAggregateRoot
         }
     }
 
+    public Result AddCv(Cv newCv)
+    {
+        if (Role != UserRole.JobSeeker)
+        {
+            return Result.Failure(UserErrors.EmployerCanNotAddNewCv);
+        }
+        
+        if (_cvs.Count >= CvLimit.Default.Value)
+        {
+            return Result.Failure(UserErrors.ExceedMaximumCv(CvLimit.Default.Value));
+        }
+
+        if (_cvs.Any(cv => cv.CvId == newCv.CvId))
+        {
+            return Result.Failure(UserErrors.AlreadyAddThisCv);
+        }
+        
+        _cvs.Add(newCv);
+
+        return Result.Success();
+    }
+
 }
