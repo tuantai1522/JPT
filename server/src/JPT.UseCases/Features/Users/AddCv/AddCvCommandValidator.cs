@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace JPT.UseCases.Features.Files.AddCv;
+namespace JPT.UseCases.Features.Users.AddCv;
 
 internal sealed class AddCvCommandValidator : AbstractValidator<AddCvCommand>
 {

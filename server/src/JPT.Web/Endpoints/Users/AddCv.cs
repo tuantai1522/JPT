@@ -1,4 +1,4 @@
-﻿using JPT.UseCases.Features.Files.AddCv;
+﻿using JPT.UseCases.Features.Users.AddCv;
 using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;

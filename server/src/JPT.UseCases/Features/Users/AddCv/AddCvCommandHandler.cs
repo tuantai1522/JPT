@@ -3,7 +3,7 @@ using JPT.Core.Features.Users;
 using JPT.UseCases.Abstractions.Authentication;
 using MediatR;
 
-namespace JPT.UseCases.Features.Files.AddCv;
+namespace JPT.UseCases.Features.Users.AddCv;
 
 internal sealed class AddCvCommandHandler(
     IUserProvider userProvider,
