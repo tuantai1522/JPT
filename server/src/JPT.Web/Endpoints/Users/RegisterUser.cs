@@ -21,7 +21,7 @@ internal sealed class RegisterUser : IEndpoint
     
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/register-user", async (
+        app.MapPost("users", async (
             Request request,
             IMediator mediator,
             CancellationToken cancellationToken) =>
