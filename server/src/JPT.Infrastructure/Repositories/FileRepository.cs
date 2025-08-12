@@ -33,4 +33,12 @@ public sealed class FileRepository(ApplicationDbContext context) : IFileReposito
 
         return await query.FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
+
+    public async Task<IReadOnlyList<File>> GetFilesByIdAsync(IReadOnlyList<Guid> fileIds, CancellationToken cancellationToken)
+    {
+        return await _context.Files
+            .AsNoTracking()
+            .Where(file => fileIds.Contains(file.Id))
+            .ToListAsync(cancellationToken);
+    }
 }

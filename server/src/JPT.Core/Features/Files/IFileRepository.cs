@@ -10,4 +10,6 @@ public interface IFileRepository : IRepository<User>
     
     Task<File?> GetFileByIdAsync(Guid fileId, CancellationToken cancellationToken, params Expression<Func<File, object?>>[]? includeProperties);
     
+    Task<IReadOnlyList<File>> GetFilesByIdAsync(IReadOnlyList<Guid> fileIds, CancellationToken cancellationToken);
+    
 }
