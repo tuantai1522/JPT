@@ -1,4 +1,6 @@
-﻿namespace JPT.Web.Extensions;
+﻿using Microsoft.Extensions.FileProviders;
+
+namespace JPT.Web.Extensions;
 
 internal static class UploadsStaticFilesExtensions
 {
@@ -6,5 +8,11 @@ internal static class UploadsStaticFilesExtensions
     {
         var uploadsAbs = Path.Combine(app.Environment.ContentRootPath, "Uploads");
         Directory.CreateDirectory(uploadsAbs);
+        
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(uploadsAbs),
+            RequestPath  = "/Uploads"
+        });
     }
 }
