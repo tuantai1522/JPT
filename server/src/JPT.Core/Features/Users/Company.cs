@@ -23,7 +23,7 @@ public sealed class Company
     private readonly List<Job> _jobs = [];
     
     public IReadOnlyList<Job> Jobs => _jobs.ToList();
-    public static Company CreateCompany(string name, Guid employerId, Guid? logoId)
+    internal static Company CreateCompany(string name, Guid employerId, Guid? logoId)
     {
         return new Company
         {

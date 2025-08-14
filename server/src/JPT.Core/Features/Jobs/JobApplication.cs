@@ -25,7 +25,7 @@ public sealed class JobApplication
         
     }
 
-    public static JobApplication CreateJobApplication(Guid applicantId, Guid jobId, Guid cvId)
+    internal static JobApplication CreateJobApplication(Guid applicantId, Guid jobId, Guid cvId)
     {
         return new JobApplication
         {

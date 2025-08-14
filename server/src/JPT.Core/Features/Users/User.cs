@@ -107,7 +107,7 @@ public sealed class User : IDateTracking, IAggregateRoot
         }
     }
 
-    public Result AddCv(Cv newCv)
+    public Result AddCv(Guid cvToAddId)
     {
         if (Role != UserRole.JobSeeker)
         {
@@ -119,11 +119,14 @@ public sealed class User : IDateTracking, IAggregateRoot
             return Result.Failure(UserErrors.ExceedMaximumCv(CvLimit.Default.Value));
         }
 
-        if (_cvs.Any(cv => cv.CvId == newCv.CvId))
+        var cv = _cvs.FirstOrDefault(cv => cv.CvId == cvToAddId);
+        if (cv is not null)
         {
             return Result.Failure(UserErrors.AlreadyAddThisCv);
         }
         
+        var newCv = Cv.CreateCv(Id, cvToAddId);
+
         _cvs.Add(newCv);
 
         return Result.Success();

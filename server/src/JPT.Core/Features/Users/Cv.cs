@@ -14,7 +14,7 @@ public sealed class Cv
         
     }
 
-    public static Cv CreateCv(Guid applicantId, Guid cvId)
+    internal static Cv CreateCv(Guid applicantId, Guid cvId)
     {
         return new Cv
         {

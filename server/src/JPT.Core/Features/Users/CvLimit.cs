@@ -8,7 +8,7 @@ public sealed record CvLimit
 
     private CvLimit(int value) => Value = value;
     
-    public static Result<CvLimit> CreateCvLimit(int value)
+    internal static Result<CvLimit> CreateCvLimit(int value)
     {
         if (value <= 0)
         {
@@ -19,5 +19,5 @@ public sealed record CvLimit
     }
     
     // Default CV Limit is 3
-    public static readonly CvLimit Default = new(3);
+    internal static readonly CvLimit Default = new(3);
 }

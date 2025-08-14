@@ -15,7 +15,7 @@ public sealed class SavedJob
         
     }
 
-    public static SavedJob CreateSavedJob(Guid applicantId, Guid jobId)
+    internal static SavedJob CreateSavedJob(Guid applicantId, Guid jobId)
     {
         return new SavedJob
         {

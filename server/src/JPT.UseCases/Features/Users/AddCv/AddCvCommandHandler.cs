@@ -29,8 +29,7 @@ internal sealed class AddCvCommandHandler(
             return Result.Failure<Guid>(FileErrors.NotFound(command.FileId));
         }
 
-        var cv = Cv.CreateCv(userId, command.FileId);
-        var result = user.AddCv(cv);
+        var result = user.AddCv(command.FileId);
 
         if (result.IsFailure)
         {
