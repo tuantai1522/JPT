@@ -7,6 +7,7 @@ using MediatR;
 namespace JPT.UseCases.Features.Users.RemoveCv;
 
 internal sealed class RemoveCvCommandHandler(
+    IUnitOfWork unitOfWork,
     IUserProvider userProvider,
     IFileRepository fileRepository,
     IUserRepository userRepository) : IRequestHandler<RemoveCvCommand, Result<Guid>>
@@ -29,15 +30,15 @@ internal sealed class RemoveCvCommandHandler(
             return Result.Failure<Guid>(FileErrors.NotFound(command.FileId));
         }
         
-        var result = user.RemoveCv(command.FileId);
+        var result = user.RemoveCv(file);
 
         if (result.IsFailure)
         {
             return Result.Failure<Guid>(result.Error);
         }
         
-        await userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-        
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         return userId;
     }
 }

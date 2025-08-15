@@ -8,6 +8,7 @@ namespace JPT.UseCases.Features.Files.UploadFile;
 
 internal sealed class UploadFileCommandHandler(
     IFileRepository fileRepository, 
+    IUnitOfWork unitOfWork,
     IFileExplorerContext fileExplorerContext, 
     IFileUrlResolver fileUrlResolver) : IRequestHandler<UploadFileCommand, Result<UploadFileResponse>>
 {
@@ -18,7 +19,7 @@ internal sealed class UploadFileCommandHandler(
         var file = File.CreateFile(command.FileName, result.path, result.uploadFileType, command.MimeType);
 
         await fileRepository.AddFileAsync(file, cancellationToken);
-        await fileRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         var path = fileUrlResolver.Build(result.uploadFileType, result.path);
 

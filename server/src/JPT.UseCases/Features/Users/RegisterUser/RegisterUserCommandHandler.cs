@@ -6,6 +6,7 @@ using MediatR;
 namespace JPT.UseCases.Features.Users.RegisterUser;
 
 internal sealed class RegisterUserCommandHandler(
+    IUnitOfWork unitOfWork,
     IUserRepository userRepository,
     IPasswordHasher passwordHasher): IRequestHandler<RegisterUserCommand, Result<Guid>>
 {
@@ -31,8 +32,8 @@ internal sealed class RegisterUserCommandHandler(
         
         await userRepository.AddUserAsync(user, cancellationToken);
 
-        await userRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
-        
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         return Result.Success(user.Id);
     }
 }

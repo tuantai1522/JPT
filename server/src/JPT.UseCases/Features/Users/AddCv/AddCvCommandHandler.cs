@@ -7,6 +7,7 @@ using MediatR;
 namespace JPT.UseCases.Features.Users.AddCv;
 
 internal sealed class AddCvCommandHandler(
+    IUnitOfWork unitOfWork,
     IUserProvider userProvider,
     IFileRepository fileRepository,
     IUserRepository userRepository) : IRequestHandler<AddCvCommand, Result<Guid>>
@@ -36,8 +37,8 @@ internal sealed class AddCvCommandHandler(
             return Result.Failure<Guid>(result.Error);
         }
         
-        await userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-        
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         return userId;
     }
 }
