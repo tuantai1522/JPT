@@ -1,10 +1,8 @@
 using System.Linq.Expressions;
-using JPT.Core.Common;
-using JPT.Core.Features.Users;
 
 namespace JPT.Core.Features.Files;
 
-public interface IFileRepository : IRepository<User>
+public interface IFileRepository
 {
     Task<File> AddFileAsync(File file, CancellationToken cancellationToken);
     

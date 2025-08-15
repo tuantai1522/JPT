@@ -2,7 +2,7 @@ using JPT.Core.Common;
 
 namespace JPT.Core.Features.Files;
 
-public class File : IAggregateRoot, ISoftDelete
+public class File : AggregateRoot, ISoftDelete
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 

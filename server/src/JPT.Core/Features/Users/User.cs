@@ -4,7 +4,7 @@ using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
 
-public sealed class User : IDateTracking, IAggregateRoot
+public sealed class User : AggregateRoot, IDateTracking 
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
     
@@ -23,14 +23,8 @@ public sealed class User : IDateTracking, IAggregateRoot
     public long CreatedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public long? UpdatedAt { get; private set; }
 
-    /// <summary>
-    /// Company if this user role is job-seeker
-    /// </summary>
-    public Company? Company { get; private set; }
-    
     public UserRole Role { get; set; } = UserRole.Employer;
     
-    public File? Avatar { get; private set; }
     public Guid? AvatarId { get; private set; }
     
     /// <summary>
@@ -72,38 +66,39 @@ public sealed class User : IDateTracking, IAggregateRoot
             Role = role,
         };
 
+        // Todo: Consider to add in domain event
         if (role == UserRole.JobSeeker)
         {
-            user.Company = Company.CreateCompany(companyName, user.Id, logoId);
+            _ = Company.CreateCompany(companyName, user.Id, logoId);
         }
 
         return user;
     }
 
-    public void UpdateUser(string firstName, string? middleName, string? lastName, Guid? avatarId, string companyName, string? companyDescription, Guid? logoId)
+    public void UpdateUser(string firstName, string? middleName, string? lastName, File? avatar, Company? company, File? logo)
     {
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
 
-        // Delete old avatar
-        if (avatarId != null && Avatar != null && avatarId != AvatarId)
+        // Delete old avatar and assign new one
+        if (avatar != null && avatar.Id != AvatarId)
         {
-            Avatar.Delete();
+            avatar.Delete();
+            
+            AvatarId = avatar.Id;
         }
-        
-        AvatarId = avatarId;
 
         // Only employer can update company information
-        if (Role == UserRole.Employer && Company != null)
+        if (Role == UserRole.Employer)
         {
             // Delete old logo
-            if (Company.Logo != null && Company.LogoId != null && Company.LogoId != logoId)
+            if (company != null && logo != null && company.LogoId != logo.Id)
             {
-                Company.Logo.Delete();
+                logo.Delete();
             }
-            
-            Company.UpdateCompany(companyName, companyDescription, logoId);
+
+            company?.UpdateCompany(company.Name, company.Description, logo?.Id);
         }
     }
 
@@ -132,9 +127,9 @@ public sealed class User : IDateTracking, IAggregateRoot
         return Result.Success();
     }
 
-    public Result RemoveCv(Guid cvToRemoveId)
+    public Result RemoveCv(File cvToRemove)
     {
-        var cv = _cvs.FirstOrDefault(cv => cv.CvId == cvToRemoveId);
+        var cv = _cvs.FirstOrDefault(cv => cv.CvId == cvToRemove.Id);
 
         if (cv is null)
         {
@@ -144,7 +139,7 @@ public sealed class User : IDateTracking, IAggregateRoot
         _cvs.Remove(cv);
             
         // Remove this cv (mark inactive)
-        cv.File.Delete();
+        cvToRemove.Delete();
         
         return Result.Success();
     }

@@ -3,7 +3,7 @@ using JPT.Core.Common;
 
 namespace JPT.Core.Features.Users;
 
-public interface IUserRepository : IRepository<User>
+public interface IUserRepository
 {
     Task<User?> FindUserByEmailAsync(string email, CancellationToken cancellationToken);
     

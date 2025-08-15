@@ -2,7 +2,7 @@ using JPT.Core.Common;
 
 namespace JPT.Core.Features.Jobs;
 
-public sealed class JobCategory : IAggregateRoot
+public sealed class JobCategory : IBaseEntity
 {
     public int Id { get; init; }
 

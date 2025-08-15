@@ -1,13 +1,12 @@
-using File = JPT.Core.Features.Files.File;
+using JPT.Core.Common;
 
 namespace JPT.Core.Features.Users;
 
-public sealed class Cv
+public sealed class Cv : IBaseEntity
 {
     public Guid ApplicantId { get; init; }
     
     public Guid CvId { get; init; }
-    public File File { get; init; } = null!;
 
     private Cv()
     {

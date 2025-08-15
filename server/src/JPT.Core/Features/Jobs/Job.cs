@@ -4,7 +4,7 @@ using JPT.Core.Features.Users;
 
 namespace JPT.Core.Features.Jobs;
 
-public sealed class Job : IDateTracking, ISoftDelete
+public sealed class Job : IBaseEntity, IDateTracking, ISoftDelete
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 
@@ -20,7 +20,6 @@ public sealed class Job : IDateTracking, ISoftDelete
     public JobStatus Status { get; private set; } = JobStatus.Active;
     
     public int JobCategoryId { get; private set; }
-    public JobCategory JobCategory { get; private set; } = null!;
 
     public long CreatedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public long? UpdatedAt { get; private set; }

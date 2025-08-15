@@ -1,13 +1,14 @@
+using JPT.Core.Common;
+
 namespace JPT.Core.Features.Countries;
 
-public sealed class City
+public sealed class City : IBaseEntity
 {
     public int Id { get; init; }
 
     public string Name { get; private set; } = null!;
     
     public int CountryId { get; private set; }
-    public Country Country { get; private set; } = null!;
 
     private City()
     {

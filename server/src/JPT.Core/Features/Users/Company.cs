@@ -1,9 +1,10 @@
+using JPT.Core.Common;
 using JPT.Core.Features.Jobs;
 using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
 
-public sealed class Company
+public sealed class Company : IBaseEntity
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
     
@@ -12,10 +13,8 @@ public sealed class Company
     public string? Description { get; private set; }
     
     public Guid EmployerId { get; private set; }
-    public User Employer { get; private set; } = null!;
     
     public Guid? LogoId { get; private set; }
-    public File? Logo { get; private set; }
 
     /// <summary>
     /// List jobs of this company.

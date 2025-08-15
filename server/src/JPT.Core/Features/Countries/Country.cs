@@ -2,7 +2,7 @@ using JPT.Core.Common;
 
 namespace JPT.Core.Features.Countries;
 
-public sealed class Country : IAggregateRoot
+public sealed class Country : AggregateRoot
 {
     public int Id { get; init; }
     

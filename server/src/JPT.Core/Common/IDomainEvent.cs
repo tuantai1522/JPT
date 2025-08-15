@@ -1,3 +1,5 @@
+using MediatR;
+
 namespace JPT.Core.Common;
 
-public interface IDomainEvent;
+public interface IDomainEvent : INotification;
