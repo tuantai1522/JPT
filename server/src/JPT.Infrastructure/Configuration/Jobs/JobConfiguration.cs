@@ -51,7 +51,7 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
         
         // One job has multiple applications
         builder.HasMany(x => x.JobApplications)
-            .WithOne(x => x.Job)
+            .WithOne()
             .HasForeignKey(u => u.JobId);
     }
 }

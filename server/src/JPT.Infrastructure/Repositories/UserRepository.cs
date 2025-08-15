@@ -3,7 +3,6 @@ using JPT.Core.Common;
 using JPT.Core.Features.Users;
 using JPT.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace JPT.Infrastructure.Repositories;
 
@@ -15,27 +14,27 @@ public sealed class UserRepository(ApplicationDbContext context) : IUserReposito
     
     public async Task<User?> FindUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        return await _context.Users
+        return await _context.Set<User>()
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
     }
 
     public async Task<User> AddUserAsync(User user, CancellationToken cancellationToken)
     {
-        var result = await _context.Users.AddAsync(user, cancellationToken);
+        var result = await _context.Set<User>().AddAsync(user, cancellationToken);
         
         return result.Entity;
     }
 
     public async Task<bool> VerifyExistedEmailAsync(string email, CancellationToken cancellationToken)
     {
-        return await _context.Users
+        return await _context.Set<User>()
             .AnyAsync(x => x.Email == email, cancellationToken);
     }
 
     public async Task<User?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken, params Expression<Func<User, object?>>[]? includeProperties)
     {
-        var query = _context.Users.AsSplitQuery().Where(x => x.Id == userId);
+        var query = _context.Set<User>().AsSplitQuery().Where(x => x.Id == userId);
 
         // Apply the include logic dynamically using the provided Func
         if (includeProperties != null)

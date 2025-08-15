@@ -1,6 +1,7 @@
 using JPT.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Infrastructure.Configuration.Users;
 
@@ -37,23 +38,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(p => p.Role).HasMaxLength(64);
 
         // One user has one avatar
-        builder.HasOne(x => x.Avatar)
-            .WithMany()
-            .HasForeignKey(u => u.AvatarId);
-        
-        builder.HasOne(u => u.Avatar)
+        builder.HasOne<File>()
             .WithOne()
             .HasForeignKey<User>(u => u.AvatarId)
             .OnDelete(DeleteBehavior.SetNull); // Don't remove user when avatar is deleted
         
         // One user has multiple saved jobs
         builder.HasMany(x => x.SavedJobs)
-            .WithOne(x => x.Applicant)
+            .WithOne()
             .HasForeignKey(u => u.ApplicantId);
         
         // One user has multiple job applications
         builder.HasMany(x => x.JobApplications)
-            .WithOne(x => x.Applicant)
+            .WithOne()
             .HasForeignKey(u => u.ApplicantId);
         
         // One user has multiple Cvs

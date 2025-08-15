@@ -1,5 +1,6 @@
 using System.Text;
 using FluentValidation;
+using JPT.Core.Common;
 using JPT.Core.Features.Countries;
 using JPT.Core.Features.Files;
 using JPT.Core.Features.Users;
@@ -10,6 +11,7 @@ using JPT.Infrastructure.Options;
 using JPT.Infrastructure.Options.Files;
 using JPT.Infrastructure.Repositories;
 using JPT.UseCases.Abstractions.Authentication;
+using JPT.UseCases.Abstractions.Data;
 using JPT.UseCases.Abstractions.Files;
 using JPT.UseCases.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,6 +40,9 @@ public static class DependencyInjection
     {
         string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
+        services.AddScoped<IApplicationDbContext>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+
         services.AddDbContextPool<ApplicationDbContext>(
             (sp, options) => options
                 .UseNpgsql(connectionString, npgsqlOptions =>
@@ -51,7 +56,6 @@ public static class DependencyInjection
     {
         services
             .AddScoped<IFileRepository, FileRepository>()
-            .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IUserRepository, UserRepository>();
 
         return services;

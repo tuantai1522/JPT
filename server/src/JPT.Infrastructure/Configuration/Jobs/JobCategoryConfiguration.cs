@@ -16,7 +16,7 @@ public class JobCategoryConfiguration : IEntityTypeConfiguration<JobCategory>
         
         // One categories job has multiple jobs
         builder.HasMany(x => x.Jobs)
-            .WithOne(x => x.JobCategory)
+            .WithOne()
             .HasForeignKey(u => u.JobCategoryId);
     }
 }

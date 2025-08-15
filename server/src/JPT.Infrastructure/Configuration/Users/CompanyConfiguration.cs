@@ -1,6 +1,7 @@
 using JPT.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Infrastructure.Configuration.Users;
 
@@ -19,12 +20,12 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
         builder.Property(p => p.Description).HasMaxLength(2048);
         
         // 1:1 relationship with Employer
-        builder.HasOne(r => r.Employer)          
-            .WithOne(x => x.Company) 
+        builder.HasOne<User>()    
+            .WithOne() 
             .HasForeignKey<Company>(r => r.EmployerId);
         
         // One company has one logo
-        builder.HasOne(u => u.Logo)
+        builder.HasOne<File>()
             .WithOne()
             .HasForeignKey<Company>(u => u.LogoId)
             .OnDelete(DeleteBehavior.SetNull); // Don't remove company when avatar is deleted

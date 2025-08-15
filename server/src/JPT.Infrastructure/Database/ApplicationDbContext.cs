@@ -1,22 +1,11 @@
 using JPT.Core.Common;
-using JPT.Core.Features.Countries;
-using JPT.Core.Features.Jobs;
-using JPT.Core.Features.Users;
+using JPT.UseCases.Abstractions.Data;
 using Microsoft.EntityFrameworkCore;
-using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Infrastructure.Database;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IUnitOfWork
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IUnitOfWork, IApplicationDbContext
 {
-    public DbSet<User> Users { get; set; }
-    
-    public DbSet<Country> Countries { get; set; }
-
-    public DbSet<JobCategory> JobCategories { get; set; }
-    
-    public DbSet<File> Files { get; set; }
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schemas.Default);
@@ -39,4 +28,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         return true;
     }
+
+    public new DbSet<TEntity> Set<TEntity>() where TEntity : class, IBaseEntity
+        => base.Set<TEntity>();
 }

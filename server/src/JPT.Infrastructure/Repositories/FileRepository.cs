@@ -15,7 +15,7 @@ public sealed class FileRepository(ApplicationDbContext context) : IFileReposito
     
     public async Task<File> AddFileAsync(File file, CancellationToken cancellationToken)
     {
-        var result = await _context.Files.AddAsync(file, cancellationToken);
+        var result = await _context.Set<File>().AddAsync(file, cancellationToken);
         
         return result.Entity;
         
@@ -23,7 +23,7 @@ public sealed class FileRepository(ApplicationDbContext context) : IFileReposito
 
     public async Task<File?> GetFileByIdAsync(Guid fileId, CancellationToken cancellationToken, params Expression<Func<File, object?>>[]? includeProperties)
     {
-        var query = _context.Files.AsSplitQuery().Where(x => x.Id == fileId);
+        var query = _context.Set<File>().AsSplitQuery().Where(x => x.Id == fileId);
 
         // Apply the include logic dynamically using the provided Func
         if (includeProperties != null)
@@ -36,7 +36,7 @@ public sealed class FileRepository(ApplicationDbContext context) : IFileReposito
 
     public async Task<IReadOnlyList<File>> GetFilesByIdAsync(IReadOnlyList<Guid> fileIds, CancellationToken cancellationToken)
     {
-        return await _context.Files
+        return await _context.Set<File>()
             .AsNoTracking()
             .Where(file => fileIds.Contains(file.Id))
             .ToListAsync(cancellationToken);

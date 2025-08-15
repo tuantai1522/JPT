@@ -1,3 +1,4 @@
+using JPT.Core.Features.Jobs;
 using JPT.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,8 +15,8 @@ public class SavedJobConfiguration : IEntityTypeConfiguration<SavedJob>
         // To define composite key
         builder.HasKey(cm => new { cm.ApplicantId, cm.JobId });
         
-        // One job has multiple savedd jobs
-        builder.HasOne(x => x.Job)
+        // One job has multiple saved jobs
+        builder.HasOne<Job>()
             .WithMany()
             .HasForeignKey(u => u.JobId);
     }

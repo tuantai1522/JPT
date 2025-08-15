@@ -1,6 +1,7 @@
 using JPT.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Infrastructure.Configuration.Users;
 
@@ -15,7 +16,7 @@ public class CvConfiguration : IEntityTypeConfiguration<Cv>
         builder.HasKey(cm => new { cm.ApplicantId, cm.CvId });
         
         // One cv belongs to one file
-        builder.HasOne(u => u.File)
+        builder.HasOne<File>()
             .WithOne()
             .HasForeignKey<Cv>(u => u.CvId);
     }
