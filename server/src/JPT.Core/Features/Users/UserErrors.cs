@@ -47,4 +47,8 @@ public static class UserErrors
     public static readonly Error CompanyNameRequired = Error.NotFound(
         "Users.CompanyNameRequired",
         "Company name is required with Role Employer");
+    
+    public static readonly Error AccessDenied = Error.NotFound(
+        "Users.AccessDenied",
+        $"You don't have permission to access this resource.");
 }

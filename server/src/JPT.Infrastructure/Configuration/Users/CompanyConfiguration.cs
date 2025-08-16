@@ -32,7 +32,7 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
         
         // One company has multiple jobs
         builder.HasMany(x => x.Jobs)
-            .WithOne(x => x.Company)
+            .WithOne()
             .HasForeignKey(u => u.CompanyId);
 
     }

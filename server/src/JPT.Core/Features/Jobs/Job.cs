@@ -39,13 +39,11 @@ public sealed class Job : IBaseEntity, IDateTracking, ISoftDelete
     /// Belongs to one city.
     /// </summary>
     public int CityId { get; private set; }
-    public City City { get; private set; } = null!;
         
     /// <summary>
     /// This post is created by company.
     /// </summary>
     public Guid CompanyId { get; private set; }
-    public Company Company { get; private set; } = null!;
     
     /// <summary>
     /// List applications of this user.

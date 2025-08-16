@@ -1,4 +1,6 @@
+using JPT.Core.Features.Countries;
 using JPT.Core.Features.Jobs;
+using JPT.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -45,9 +47,14 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
         builder.Property(p => p.Status).HasMaxLength(64);
 
         // One job belongs to one city
-        builder.HasOne(x => x.City)
+        builder.HasOne<City>()
             .WithMany()
             .HasForeignKey(u => u.CityId);
+        
+        // One job belongs to one company
+        builder.HasOne<Company>()
+            .WithMany()
+            .HasForeignKey(u => u.CompanyId);
         
         // One job has multiple applications
         builder.HasMany(x => x.JobApplications)
