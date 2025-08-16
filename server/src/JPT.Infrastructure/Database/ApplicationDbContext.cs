@@ -1,10 +1,11 @@
 using JPT.Core.Common;
 using JPT.UseCases.Abstractions.Data;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace JPT.Infrastructure.Database;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IUnitOfWork, IApplicationDbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator) : DbContext(options), IUnitOfWork, IApplicationDbContext
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -13,7 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
-    public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         // Dispatch Domain Events collection. 
         // Choices:
@@ -24,11 +25,34 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
         // performed through the DbContext will be committed
-        await base.SaveChangesAsync(cancellationToken);
+        int result = await base.SaveChangesAsync(cancellationToken);
 
-        return true;
+        await PublishDomainEventsAsync(cancellationToken);
+
+        return result;
     }
 
     public new DbSet<TEntity> Set<TEntity>() where TEntity : class, IBaseEntity
         => base.Set<TEntity>();
+    
+    private async Task PublishDomainEventsAsync(CancellationToken cancellationToken)
+    {
+        var domainEvents = ChangeTracker
+            .Entries<AggregateRoot>()
+            .Select(entry => entry.Entity)
+            .SelectMany(entity =>
+            {
+                var domainEvents = entity.DomainEvents.ToList();
+
+                entity.ClearDomainEvents();
+
+                return domainEvents;
+            })
+            .ToList();
+
+        foreach (var domainEvent in domainEvents)
+        {
+            await mediator.Publish(domainEvent, cancellationToken);
+        }
+    }
 }

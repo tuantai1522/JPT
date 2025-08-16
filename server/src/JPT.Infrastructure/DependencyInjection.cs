@@ -1,7 +1,6 @@
 using System.Text;
 using FluentValidation;
 using JPT.Core.Common;
-using JPT.Core.Features.Countries;
 using JPT.Core.Features.Files;
 using JPT.Core.Features.Users;
 using JPT.Infrastructure.Authentication;
@@ -35,23 +34,23 @@ public static class DependencyInjection
             .AddAuthorizationInternal()
             .AddOptionSettings()
             .AddFileExplorer();
-    
+
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddScoped<IApplicationDbContext>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+        
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
 
-        services.AddDbContextPool<ApplicationDbContext>(
-            (sp, options) => options
-                .UseNpgsql(connectionString, npgsqlOptions =>
+        services.AddDbContext<ApplicationDbContext>(
+            options => options.UseNpgsql(connectionString, npgsqlOptions => 
                     npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
                 .UseSnakeCaseNamingConvention());
 
         return services;
     }
-    
+
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services

@@ -1,5 +1,4 @@
-﻿using JPT.Core.Features.Users;
-using JPT.UseCases.Features.Users.UpdateUser;
+﻿using JPT.UseCases.Features.Users.UpdateUser;
 using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
@@ -12,7 +11,6 @@ internal sealed class UpdateUser : IEndpoint
         string FirstName,
         string? MiddleName,
         string? LastName,
-        UserRole Role,
         Guid? AvatarId,
         string? Description,
         string CompanyName,
@@ -30,7 +28,6 @@ internal sealed class UpdateUser : IEndpoint
                     request.FirstName,
                     request.MiddleName,
                     request.LastName,
-                    request.Role,
                     request.AvatarId,
                     request.Description,
                     request.CompanyName,

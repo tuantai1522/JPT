@@ -43,4 +43,8 @@ public static class UserErrors
     public static readonly Error CanNotFindCvOfThisUser = Error.NotFound(
         "Users.CanNotFindCvOfThisUser",
         $"Can not find CV of this user. Please try again.");
+    
+    public static readonly Error CompanyNameRequired = Error.NotFound(
+        "Users.CompanyNameRequired",
+        "Company name is required with Role Employer");
 }

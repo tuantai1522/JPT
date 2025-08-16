@@ -14,14 +14,19 @@ internal sealed class UpdateUserCommandHandler(
     {
         var userId = userProvider.UserId;
 
-        var user = await userRepository.GetUserByIdAsync(userId, cancellationToken);
+        var user = await userRepository.GetUserByIdAsync(userId, cancellationToken, u => u.Company);
 
         if (user is null)
         {
             return Result.Failure<Guid>(UserErrors.NotFound(userId));
         }
         
-        user.UpdateUser(command.FirstName, command.MiddleName, command.LastName, command.AvatarId, command.Description, command.CompanyName, command.CompanyDescription, command.LogoId);
+        var result = user.UpdateUser(command.FirstName, command.MiddleName, command.LastName, command.AvatarId, command.Description, command.CompanyName, command.CompanyDescription, command.LogoId);
+
+        if (result.IsFailure)
+        {
+            return Result.Failure<Guid>(result.Error);
+        }
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

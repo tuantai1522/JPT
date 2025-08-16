@@ -8,7 +8,6 @@ public sealed record UpdateUserCommand(
     string FirstName,
     string? MiddleName,
     string? LastName,
-    UserRole Role,
     Guid? AvatarId, 
     string? Description,
     string CompanyName,

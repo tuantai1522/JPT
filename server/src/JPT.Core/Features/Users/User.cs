@@ -23,7 +23,7 @@ public sealed class User : AggregateRoot, IDateTracking
     public long CreatedAt { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public long? UpdatedAt { get; private set; }
 
-    public UserRole Role { get; set; } = UserRole.Employer;
+    public UserRole Role { get; private set; } = UserRole.Employer;
     
     public Guid? AvatarId { get; private set; }
     
@@ -80,9 +80,14 @@ public sealed class User : AggregateRoot, IDateTracking
         return user;
     }
 
-    public void UpdateUser(string firstName, string? middleName, string? lastName, Guid? avatarId, string? description, string companyName,
+    public Result UpdateUser(string firstName, string? middleName, string? lastName, Guid? avatarId, string? description, string companyName,
         string? companyDescription, Guid? logoId)
     {
+        if (Role == UserRole.Employer && string.IsNullOrEmpty(companyName))
+        {
+            return Result.Failure(UserErrors.CompanyNameRequired);
+        }
+
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
@@ -108,7 +113,7 @@ public sealed class User : AggregateRoot, IDateTracking
             Company?.UpdateCompany(companyName, companyDescription, logoId);
         }
         
-        UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        return Result.Success();
     }
 
     public Result AddCv(Guid cvToAddId)
