@@ -10,6 +10,7 @@ public sealed record UpdateUserCommand(
     string? LastName,
     UserRole Role,
     Guid? AvatarId, 
+    string? Description,
     string CompanyName,
     string? CompanyDescription,
     Guid? LogoId) : IRequest<Result<Guid>>;

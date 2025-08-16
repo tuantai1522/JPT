@@ -21,8 +21,7 @@ internal sealed class UpdateUserCommandHandler(
             return Result.Failure<Guid>(UserErrors.NotFound(userId));
         }
         
-        // Todo: To fix this method later
-        // user.UpdateUser(command.FirstName, command.MiddleName, command.LastName, command.AvatarId, command.CompanyName, command.CompanyDescription, command.LogoId);
+        user.UpdateUser(command.FirstName, command.MiddleName, command.LastName, command.AvatarId, command.Description, command.CompanyName, command.CompanyDescription, command.LogoId);
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

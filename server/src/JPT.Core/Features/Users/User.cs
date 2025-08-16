@@ -1,6 +1,6 @@
 using JPT.Core.Common;
+using JPT.Core.Features.Files;
 using JPT.Core.Features.Jobs;
-using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
 
@@ -28,6 +28,11 @@ public sealed class User : AggregateRoot, IDateTracking
     public Guid? AvatarId { get; private set; }
     
     /// <summary>
+    /// User has one Company
+    /// </summary>
+    public Company? Company { get; private set; }
+    
+    /// <summary>
     /// List saved jobs of this user.
     /// </summary>
     private readonly List<SavedJob> _savedJobs = [];
@@ -52,10 +57,11 @@ public sealed class User : AggregateRoot, IDateTracking
     {
         
     }
-    
-    public static User CreateUser(string firstName, string? middleName, string? lastName, string email, string hashPassword, Guid? avatarId, UserRole role, string companyName, Guid? logoId)
+
+    public static User CreateUser(string firstName, string? middleName, string? lastName, string email,
+        string hashPassword, Guid? avatarId, UserRole role, string companyName, Guid? logoId)
     {
-        var user =  new User
+        var user = new User
         {
             FirstName = firstName,
             MiddleName = middleName,
@@ -66,40 +72,43 @@ public sealed class User : AggregateRoot, IDateTracking
             Role = role,
         };
 
-        // Todo: Consider to add in domain event
-        if (role == UserRole.JobSeeker)
+        if (role == UserRole.Employer)
         {
-            _ = Company.CreateCompany(companyName, user.Id, logoId);
+            user.Company = Company.CreateCompany(companyName, user.Id, logoId);
         }
 
         return user;
     }
 
-    public void UpdateUser(string firstName, string? middleName, string? lastName, File? avatar, Company? company, File? logo)
+    public void UpdateUser(string firstName, string? middleName, string? lastName, Guid? avatarId, string? description, string companyName,
+        string? companyDescription, Guid? logoId)
     {
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
+        Description = description;
 
         // Delete old avatar and assign new one
-        if (avatar != null && avatar.Id != AvatarId)
+        if (AvatarId.HasValue && avatarId != AvatarId)
         {
-            avatar.Delete();
-            
-            AvatarId = avatar.Id;
+            AddDomainEvent(new FileDeletedDomainEvent(AvatarId.Value));
+
+            AvatarId = avatarId;
         }
 
         // Only employer can update company information
         if (Role == UserRole.Employer)
         {
             // Delete old logo
-            if (company != null && logo != null && company.LogoId != logo.Id)
+            if (Company is { LogoId: not null } && Company.LogoId != logoId)
             {
-                logo.Delete();
+                AddDomainEvent(new FileDeletedDomainEvent(Company.LogoId.Value));
             }
 
-            company?.UpdateCompany(company.Name, company.Description, logo?.Id);
+            Company?.UpdateCompany(companyName, companyDescription, logoId);
         }
+        
+        UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
 
     public Result AddCv(Guid cvToAddId)
@@ -127,9 +136,9 @@ public sealed class User : AggregateRoot, IDateTracking
         return Result.Success();
     }
 
-    public Result RemoveCv(File cvToRemove)
+    public Result RemoveCv(Guid cvToRemoveId)
     {
-        var cv = _cvs.FirstOrDefault(cv => cv.CvId == cvToRemove.Id);
+        var cv = _cvs.FirstOrDefault(cv => cv.CvId == cvToRemoveId);
 
         if (cv is null)
         {
@@ -139,8 +148,8 @@ public sealed class User : AggregateRoot, IDateTracking
         _cvs.Remove(cv);
             
         // Remove this cv (mark inactive)
-        cvToRemove.Delete();
-        
+        AddDomainEvent(new FileDeletedDomainEvent(cvToRemoveId));
+
         return Result.Success();
     }
 

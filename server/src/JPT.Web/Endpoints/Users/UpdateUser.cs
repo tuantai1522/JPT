@@ -14,10 +14,11 @@ internal sealed class UpdateUser : IEndpoint
         string? LastName,
         UserRole Role,
         Guid? AvatarId,
+        string? Description,
         string CompanyName,
         string? CompanyDescription,
         Guid? LogoId);
-    
+
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPut("users", async (
@@ -31,6 +32,7 @@ internal sealed class UpdateUser : IEndpoint
                     request.LastName,
                     request.Role,
                     request.AvatarId,
+                    request.Description,
                     request.CompanyName,
                     request.CompanyDescription,
                     request.LogoId);

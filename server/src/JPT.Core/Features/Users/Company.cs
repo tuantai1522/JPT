@@ -1,6 +1,5 @@
 using JPT.Core.Common;
 using JPT.Core.Features.Jobs;
-using File = JPT.Core.Features.Files.File;
 
 namespace JPT.Core.Features.Users;
 

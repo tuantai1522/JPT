@@ -21,7 +21,7 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
         
         // 1:1 relationship with Employer
         builder.HasOne<User>()    
-            .WithOne() 
+            .WithOne(u => u.Company) 
             .HasForeignKey<Company>(r => r.EmployerId);
         
         // One company has one logo
