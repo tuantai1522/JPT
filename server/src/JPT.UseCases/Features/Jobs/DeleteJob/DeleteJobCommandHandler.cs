@@ -6,15 +6,15 @@ using JPT.UseCases.Abstractions.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace JPT.UseCases.Features.Jobs.UpdateJob;
+namespace JPT.UseCases.Features.Jobs.DeleteJob;
 
-internal sealed class UpdateJobCommandHandler(
+internal sealed class DeleteJobCommandHandler(
     IUnitOfWork unitOfWork,
     IApplicationDbContext dbContext,
     IUserProvider userProvider,
-    IUserRepository userRepository) : IRequestHandler<UpdateJobCommand, Result<Guid>>
+    IUserRepository userRepository) : IRequestHandler<DeleteJobCommand, Result<Guid>>
 {
-    public async Task<Result<Guid>> Handle(UpdateJobCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(DeleteJobCommand command, CancellationToken cancellationToken)
     {
         var userId = userProvider.UserId;
 
@@ -37,11 +37,10 @@ internal sealed class UpdateJobCommandHandler(
             return Result.Failure<Guid>(JobErrors.AccessDenied(command.Id));
         }
 
-        job.UpdateJob(command.Title, command.Description, command.Requirements, command.MinSalary, command.MaxSalary,
-            command.JobCategoryId, command.Type, command.CityId);
+        job.Delete();
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        
+
         return Result.Success(job.Id);
     }
 

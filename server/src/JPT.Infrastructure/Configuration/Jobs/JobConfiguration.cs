@@ -60,5 +60,7 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
         builder.HasMany(x => x.JobApplications)
             .WithOne()
             .HasForeignKey(u => u.JobId);
+        
+        builder.HasQueryFilter(j => !j.IsDeleted);
     }
 }
