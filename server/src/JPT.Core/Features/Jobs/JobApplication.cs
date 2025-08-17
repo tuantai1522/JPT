@@ -14,7 +14,7 @@ public sealed class JobApplication : IBaseEntity
     
     public Guid CvId { get; init; }
 
-    public JobApplicationStatus Status { get; private set; } = JobApplicationStatus.InReview;
+    public JobApplicationStatus Status { get; private set; } = JobApplicationStatus.Applied;
     
     private JobApplication()
     {

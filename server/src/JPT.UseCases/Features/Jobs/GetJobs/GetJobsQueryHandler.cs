@@ -51,11 +51,11 @@ public class GetJobsQueryHandler(
                 job.MinSalary,
                 job.MaxSalary,
                 job.CreatedAt,
-                userId.HasValue ? jobApps
-                    .OrderByDescending(jobApp => jobApp.AppliedAt)
-                    .FirstOrDefault(jobApp => jobApp.ApplicantId == userId).Status
-                    .ToString() 
-                    : JobApplicationStatus.Apply.ToString(),
+                userId.HasValue 
+                    ? jobApps
+                        .OrderByDescending(jobApp => jobApp.AppliedAt)
+                        .FirstOrDefault(jobApp => jobApp.ApplicantId == userId)?.Status.ToString()
+                    : null,
                 userId.HasValue && dbContext.Set<SavedJob>().Any(savedJob => savedJob.JobId == job.Id && savedJob.ApplicantId == userId)
             );
 

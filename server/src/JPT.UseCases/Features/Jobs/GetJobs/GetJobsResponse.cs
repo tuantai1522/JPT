@@ -10,5 +10,5 @@ public sealed record GetJobsResponse(
     decimal? MinSalary,
     decimal? MaxSalary,
     long CreatedAt,
-    string JobApplicationStatus,
+    string? JobApplicationStatus,
     bool IsSaved);
