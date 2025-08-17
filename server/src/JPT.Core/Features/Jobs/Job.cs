@@ -84,4 +84,9 @@ public sealed class Job : IBaseEntity, IDateTracking, ISoftDelete
         
         UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
+
+    public void UpdateStatus(JobStatus status)
+    {
+        Status = status;
+    }
 }
