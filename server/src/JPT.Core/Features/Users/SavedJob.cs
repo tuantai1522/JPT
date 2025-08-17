@@ -1,6 +1,8 @@
+using JPT.Core.Common;
+
 namespace JPT.Core.Features.Users;
 
-public sealed class SavedJob
+public sealed class SavedJob : IBaseEntity
 {
     public Guid ApplicantId { get; init; }
     
