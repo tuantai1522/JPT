@@ -10,6 +10,5 @@ public sealed class UserProvider(IHttpContextAccessor httpContextAccessor) : IUs
             .HttpContext?
             .User
             .GetUserId() ??
-        throw new ApplicationException("User context is unavailable");
-
+        Guid.Empty;
 }
