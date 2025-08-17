@@ -55,7 +55,7 @@ public class GetJobsQueryHandler(
                     .OrderByDescending(jobApp => jobApp.AppliedAt)
                     .FirstOrDefault(jobApp => jobApp.ApplicantId == userId).Status
                     .ToString() 
-                    : JobApplicationStatus.Applied.ToString(),
+                    : JobApplicationStatus.Apply.ToString(),
                 userId.HasValue && dbContext.Set<SavedJob>().Any(savedJob => savedJob.JobId == job.Id && savedJob.ApplicantId == userId)
             );
 

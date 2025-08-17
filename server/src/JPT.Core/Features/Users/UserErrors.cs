@@ -40,15 +40,23 @@ public static class UserErrors
         "Users.EmployerCanNotAddNewCv",
         $"Only Job seeker can add new CV. Please try again.");
     
-    public static readonly Error CanNotFindCvOfThisUser = Error.NotFound(
+    public static readonly Error CanNotFindCvOfThisUser = Error.Validation(
         "Users.CanNotFindCvOfThisUser",
         $"Can not find CV of this user. Please try again.");
     
-    public static readonly Error CompanyNameRequired = Error.NotFound(
+    public static readonly Error CompanyNameRequired = Error.Validation(
         "Users.CompanyNameRequired",
         "Company name is required with Role Employer");
     
-    public static readonly Error AccessDenied = Error.NotFound(
+    public static readonly Error AccessDenied = Error.Validation(
         "Users.AccessDenied",
         $"You don't have permission to access this resource.");
+    
+    public static readonly Error CanNotApplyThisJob = Error.Validation(
+        "Users.CanNotApplyThisJob",
+        $"You can't apply this job. Please wait response from employer.");
+    
+    public static readonly Error EmployerCanNotApplyJob = Error.Validation(
+        "Users.EmployerCanNotApplyJob",
+        $"Only Job seeker can apply job. Please try again.");
 }

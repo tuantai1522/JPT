@@ -158,4 +158,26 @@ public sealed class User : AggregateRoot, IDateTracking
         return Result.Success();
     }
 
+    public Result ApplyJob(Guid jobId, Guid cvId)
+    {
+        if (Role != UserRole.JobSeeker)
+        {
+            return Result.Failure(UserErrors.EmployerCanNotApplyJob);
+        }
+        
+        var verifyExistedJobApplication = _jobApplications.Any(jobApplication => jobApplication.Status == JobApplicationStatus.InReview && 
+                                                                    jobApplication.JobId == jobId);
+
+        if (verifyExistedJobApplication)
+        {
+            return Result.Failure(UserErrors.CanNotApplyThisJob);
+        }
+
+        var jobApplication = JobApplication.CreateJobApplication(Id, jobId, cvId);
+        
+        // Todo: Add Domain event to notify employer.
+        _jobApplications.Add(jobApplication);
+        
+        return Result.Success();
+    }
 }
