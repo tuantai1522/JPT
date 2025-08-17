@@ -1,6 +1,4 @@
 using JPT.Core.Common;
-using JPT.Core.Features.Countries;
-using JPT.Core.Features.Users;
 
 namespace JPT.Core.Features.Jobs;
 
@@ -71,5 +69,19 @@ public sealed class Job : IBaseEntity, IDateTracking, ISoftDelete
             CompanyId = companyId,
             CityId = cityId,
         };
+    }
+    
+    public void UpdateJob(string title, string? description, string? requirements, decimal? minSalary, decimal? maxSalary, int jobCategoryId, JobType type, int cityId)
+    {
+        Title = title;
+        Description = description;
+        Requirements = requirements;
+        MaxSalary = maxSalary;
+        MinSalary = minSalary;
+        JobCategoryId = jobCategoryId;
+        Type = type;
+        CityId = cityId;
+        
+        UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
 }
