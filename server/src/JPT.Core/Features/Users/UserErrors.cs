@@ -59,4 +59,12 @@ public static class UserErrors
     public static readonly Error EmployerCanNotApplyJob = Error.Validation(
         "Users.EmployerCanNotApplyJob",
         $"Only Job seeker can apply job. Please try again.");
+    
+    public static readonly Error EmployerCanNotSaveJob = Error.Validation(
+        "Users.EmployerCanNotSaveJob",
+        $"Only Job seeker can save job. Please try again.");
+    
+    public static readonly Error AlreadySaveThisJob = Error.Validation(
+        "Users.AlreadySaveThisJob",
+        $"This user already saved this job");
 }

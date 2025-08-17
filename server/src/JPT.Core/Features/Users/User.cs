@@ -92,6 +92,7 @@ public sealed class User : AggregateRoot, IDateTracking
         MiddleName = middleName;
         LastName = lastName;
         Description = description;
+        UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         // Delete old avatar and assign new one
         if (AvatarId.HasValue && avatarId != AvatarId)
@@ -177,6 +178,27 @@ public sealed class User : AggregateRoot, IDateTracking
         
         // Todo: Add Domain event to notify employer.
         _jobApplications.Add(jobApplication);
+        
+        return Result.Success();
+    }
+    
+    public Result SaveJob(Guid jobId)
+    {
+        if (Role != UserRole.JobSeeker)
+        {
+            return Result.Failure(UserErrors.EmployerCanNotSaveJob);
+        }
+        
+        var verifyExistedJob = _savedJobs.Any(saveJob => saveJob.JobId == jobId);
+
+        if (verifyExistedJob)
+        {
+            return Result.Failure(UserErrors.AlreadySaveThisJob);
+        }
+
+        var savedJob = SavedJob.CreateSavedJob(Id, jobId);
+        
+        _savedJobs.Add(savedJob);
         
         return Result.Success();
     }

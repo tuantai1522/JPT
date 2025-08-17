@@ -1,5 +1,4 @@
 ﻿using JPT.Core.Common;
-using JPT.Core.Features.Files;
 using JPT.Core.Features.Jobs;
 using JPT.Core.Features.Users;
 using JPT.UseCases.Abstractions.Authentication;
@@ -7,33 +6,25 @@ using JPT.UseCases.Abstractions.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace JPT.UseCases.Features.Users.ApplyJob;
+namespace JPT.UseCases.Features.Users.SaveJob;
 
-internal sealed class ApplyJobCommandHandler(
+internal sealed class SaveJobCommandHandler(
     IApplicationDbContext dbContext,
     IUnitOfWork unitOfWork,
     IUserProvider userProvider,
-    IFileRepository fileRepository,
-    IUserRepository userRepository) : IRequestHandler<ApplyJobCommand, Result<Guid>>
+    IUserRepository userRepository) : IRequestHandler<SaveJobCommand, Result<Guid>>
 {
-    public async Task<Result<Guid>> Handle(ApplyJobCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(SaveJobCommand command, CancellationToken cancellationToken)
     {
         var userId = userProvider.UserId;
 
-        var user = await userRepository.GetUserByIdAsync(userId, cancellationToken, u => u.JobApplications);
+        var user = await userRepository.GetUserByIdAsync(userId, cancellationToken, u => u.SavedJobs);
         
         if (user is null)
         {
             return Result.Failure<Guid>(UserErrors.NotFound(userId));
         }
         
-        var file = await fileRepository.GetFileByIdAsync(command.CvId, cancellationToken);
-        
-        if (file is null || file.IsDeleted)
-        {
-            return Result.Failure<Guid>(FileErrors.NotFound(command.CvId));
-        }
-
         var verifyExistedJob = await VerifyExistedJobByIdAsync(command.JobId, cancellationToken);
 
         if (!verifyExistedJob)
@@ -41,7 +32,7 @@ internal sealed class ApplyJobCommandHandler(
             return Result.Failure<Guid>(JobErrors.NotFound(command.JobId));
         }
 
-        var result = user.ApplyJob(command.JobId, command.CvId);
+        var result = user.SaveJob(command.JobId);
 
         if (result.IsFailure)
         {
