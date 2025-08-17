@@ -202,4 +202,18 @@ public sealed class User : AggregateRoot, IDateTracking
         
         return Result.Success();
     }
+    
+    public Result UnSaveJob(Guid jobId)
+    {
+        var job = _savedJobs.FirstOrDefault(saveJob => saveJob.JobId == jobId);
+
+        if (job is null)
+        {
+            return Result.Failure(UserErrors.UserNotSaveThisJobBefore);
+        }
+
+        _savedJobs.Remove(job);
+        
+        return Result.Success();
+    }
 }

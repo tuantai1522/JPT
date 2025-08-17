@@ -67,4 +67,8 @@ public static class UserErrors
     public static readonly Error AlreadySaveThisJob = Error.Validation(
         "Users.AlreadySaveThisJob",
         $"This user already saved this job");
+    
+    public static readonly Error UserNotSaveThisJobBefore = Error.Validation(
+        "Users.UserNotSaveThisJobBefore",
+        $"This job is not saved by user before. Please check again.");
 }

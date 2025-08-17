@@ -1,20 +1,20 @@
-﻿using JPT.UseCases.Features.Users.SavedJob.SaveJob;
+﻿using JPT.UseCases.Features.Users.SavedJob.UnSaveJob;
 using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
 
 namespace JPT.Web.Endpoints.Users.SavedJob;
 
-internal sealed class SaveJob : IEndpoint
+internal sealed class UnSaveJob : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/saved-jobs/save-job/{jobId:guid}", async (
+        app.MapPut("users/saved-jobs/unsave-job/{jobId:guid}", async (
             Guid jobId,
             IMediator mediator,
             CancellationToken cancellationToken) =>
         {
-            var command = new SaveJobCommand(jobId);
+            var command = new UnSaveJobCommand(jobId);
 
             var result = await mediator.Send(command, cancellationToken);
 
