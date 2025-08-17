@@ -8,9 +8,9 @@
 
     <ItemGroup>
       <Folder Include="Features\Countries\" />
-      <Folder Include="Features\Users\Cv\" />
-      <Folder Include="Features\Users\JobApplication\" />
-      <Folder Include="Features\Users\User\" />
+      <Folder Include="Features\Users\Cvs\" />
+      <Folder Include="Features\Users\JobApplications\" />
+      <Folder Include="Features\Users\Users\" />
     </ItemGroup>
 
     <ItemGroup>
