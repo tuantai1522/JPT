@@ -1,6 +1,5 @@
 ﻿using JPT.Core.Features.Jobs;
 using JPT.UseCases.Features.Jobs.AddJob;
-using JPT.UseCases.Features.Users.AddCv;
 using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
