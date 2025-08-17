@@ -7,6 +7,6 @@ internal sealed class RemoveCvCommandValidator : AbstractValidator<RemoveCvComma
     public RemoveCvCommandValidator()
     {
         RuleFor(c => c.FileId)
-            .NotNull().WithMessage("FileId is required.");
+            .NotEmpty().WithMessage("FileId is required.");
     }
 }

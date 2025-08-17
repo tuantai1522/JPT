@@ -7,7 +7,7 @@ internal sealed class UploadFileCommandValidator : AbstractValidator<UploadFileC
     public UploadFileCommandValidator()
     {
         RuleFor(c => c.Stream)
-            .NotNull().WithMessage("File is required.")
+            .NotEmpty().WithMessage("File is required.")
             .Must(s => s.CanRead && s.Length > 0).WithMessage("Stream must be readable and not empty.");
 
         RuleFor(c => c.MimeType)

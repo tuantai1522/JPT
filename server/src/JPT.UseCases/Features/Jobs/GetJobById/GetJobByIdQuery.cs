@@ -4,4 +4,4 @@ using MediatR;
 
 namespace JPT.UseCases.Features.Jobs.GetJobById;
 
-public sealed record GetJobByIdQuery(Guid JobId) : IRequest<Result<GetJobByIdResponse>>;
+public sealed record GetJobByIdQuery(Guid Id) : IRequest<Result<GetJobByIdResponse>>;

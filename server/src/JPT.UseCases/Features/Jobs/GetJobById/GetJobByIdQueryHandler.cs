@@ -17,11 +17,11 @@ public class GetJobByIdQueryHandler(
     {
         var userId = userProvider.UserId;
 
-        var response = await BuildResponse(query.JobId, userId, cancellationToken);
+        var response = await BuildResponse(query.Id, userId, cancellationToken);
 
         if (response is null)
         {
-            return Result.Failure<GetJobByIdResponse>(JobErrors.NotFound(query.JobId));
+            return Result.Failure<GetJobByIdResponse>(JobErrors.NotFound(query.Id));
         }
 
         return Result.Success(response);

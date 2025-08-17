@@ -7,6 +7,6 @@ internal sealed class AddCvCommandValidator : AbstractValidator<AddCvCommand>
     public AddCvCommandValidator()
     {
         RuleFor(c => c.FileId)
-            .NotNull().WithMessage("FileId is required.");
+            .NotEmpty().WithMessage("FileId is required.");
     }
 }
