@@ -38,4 +38,13 @@ public sealed class Company : IBaseEntity
         LogoId = logoId;
     }
 
+    public void AddJob(string title, string? description, string? requirements, decimal? minSalary,
+        decimal? maxSalary, int jobCategoryId, JobType type, int cityId)
+    {
+        var newJob = Job.CreateJob(title, description, requirements, minSalary, maxSalary, jobCategoryId, Id,
+            type, cityId);
+        
+        _jobs.Add(newJob);
+    }
+
 }
