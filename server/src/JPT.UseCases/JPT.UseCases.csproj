@@ -9,7 +9,6 @@
     <ItemGroup>
       <Folder Include="Features\Countries\" />
       <Folder Include="Features\Users\Cvs\" />
-      <Folder Include="Features\Users\JobApplications\" />
       <Folder Include="Features\Users\Users\" />
     </ItemGroup>
 
