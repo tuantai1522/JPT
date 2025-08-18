@@ -89,4 +89,18 @@ public sealed class Job : IBaseEntity, IDateTracking, ISoftDelete
     {
         Status = status;
     }
+    
+    public Result UpdateJobApplicationStatus(Guid jobApplicationId, JobApplicationStatus status)
+    {
+        var jobApplication = _jobApplications.FirstOrDefault(jobApplication => jobApplication.Id == jobApplicationId);
+
+        if (jobApplication is null)
+        {
+            return Result.Failure(JobErrors.JobApplicationNotFound(jobApplicationId));
+        }
+
+        jobApplication.UpdateJobApplicationStatus(status);
+        
+        return Result.Success();
+    }
 }

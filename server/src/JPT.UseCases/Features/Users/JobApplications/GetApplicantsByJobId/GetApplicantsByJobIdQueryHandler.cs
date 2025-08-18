@@ -68,12 +68,10 @@ public class GetApplicantsByJobIdQueryHandler(
             join user in dbContext.Set<User>()
                 on ja.ApplicantId equals user.Id
 
-            // LEFT JOIN avatar (vì AvatarId có thể null)
             from avFile in dbContext.Set<File>()
                 .Where(f => user.AvatarId != null && f.Id == user.AvatarId)
                 .DefaultIfEmpty()
 
-            // INNER JOIN CV (bắt buộc)
             join cvFile in dbContext.Set<File>()
                 on ja.CvId equals cvFile.Id
 
@@ -88,6 +86,7 @@ public class GetApplicantsByJobIdQueryHandler(
                 avFile.Path,
                 cvFile.UploadType,
                 cvFile.Path,
+                jobId,
                 ja.Id,
                 ja.Status.ToString(),
                 ja.AppliedAt

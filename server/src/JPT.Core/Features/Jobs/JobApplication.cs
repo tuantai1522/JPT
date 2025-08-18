@@ -30,4 +30,6 @@ public sealed class JobApplication : IBaseEntity
             CvId = cvId
         };
     }
+
+    internal void UpdateJobApplicationStatus(JobApplicationStatus status) => Status = status;
 }

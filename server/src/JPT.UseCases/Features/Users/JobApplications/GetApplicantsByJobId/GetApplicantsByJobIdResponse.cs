@@ -13,6 +13,7 @@ public sealed record GetApplicantsByJobIdResponse(
     string? AvatarUrl,
     [property: JsonIgnore] UploadFileType UploadCvType,
     string CvUrl,
+    Guid JobId,
     Guid JobApplicationId,
     string JobApplicationStatus,
     long AppliedAt);
