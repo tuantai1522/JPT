@@ -9,7 +9,7 @@ internal sealed class GetJobsEmployer : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("jobs/employer", async (
+        app.MapGet("jobs/get-jobs-employer", async (
                 [AsParameters] GetJobsEmployerQuery query,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>

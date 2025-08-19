@@ -9,7 +9,7 @@ internal sealed class RemoveCv : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("users/cvs/{fileId:guid}", async (
+        app.MapDelete("users/cvs/remove-cv/{fileId:guid}", async (
             Guid fileId,
             IMediator mediator,
             CancellationToken cancellationToken) =>

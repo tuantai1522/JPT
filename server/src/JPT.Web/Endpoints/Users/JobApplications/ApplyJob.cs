@@ -11,7 +11,7 @@ internal sealed class ApplyJob : IEndpoint
     
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/job-applications/{jobId:guid}", async (
+        app.MapPost("users/job-applications/apply-to-job/{jobId:guid}", async (
             Guid jobId,
             Request request,
             IMediator mediator,

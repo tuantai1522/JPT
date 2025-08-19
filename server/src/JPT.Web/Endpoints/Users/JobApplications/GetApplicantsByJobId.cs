@@ -11,13 +11,13 @@ internal sealed class GetApplicantsByJobId : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("users/job-applicants/{jobId:guid}", async (
-                Guid jobId,
+        app.MapGet("jobs/job-applicants/{id:guid}", async (
+                Guid id,
                 [AsParameters] Request request,
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var query = new GetApplicantsByJobIdQuery(jobId)
+                var query = new GetApplicantsByJobIdQuery(id)
                 {
                     Page = request.Page,
                     PageSize = request.PageSize
@@ -27,7 +27,7 @@ internal sealed class GetApplicantsByJobId : IEndpoint
 
                 return result.Match(Results.Ok, CustomResults.Problem);
             })
-            .WithTags(Tags.Users)
+            .WithTags(Tags.Jobs)
             .RequireAuthorization();
     }
 }

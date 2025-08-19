@@ -3,23 +3,25 @@ using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
 
-namespace JPT.Web.Endpoints.Countries;
+namespace JPT.Web.Endpoints.Cities;
 
 internal sealed class GetCitiesByCountryId : IEndpoint
 {
+    private sealed record Request(int CountryId);
+    
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("countries/{id:int}/get-cities", async (
-            int id,
+        app.MapGet("cities", async (
+            [AsParameters] Request request,
             IMediator mediator,
             CancellationToken cancellationToken) =>
             {
-                var query = new GetCitiesByCountryIdQuery(id);
+                var query = new GetCitiesByCountryIdQuery(request.CountryId);
 
                 var result = await mediator.Send(query, cancellationToken);
 
                 return result.Match(Results.Ok, CustomResults.Problem);
             })
-            .WithTags(Tags.Countries);
+            .WithTags(Tags.Cities);
     }
 }

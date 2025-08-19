@@ -6,7 +6,7 @@ namespace JPT.UseCases.Features.Jobs.GetJobs;
 public sealed record GetJobsQuery(
     string? KeyWords,
     int? CityId,
-    IReadOnlyList<JobType> JobTypes,
+    List<JobType>? JobTypes,
     decimal? MinSalary,
     decimal? MaxSalary,
-    IReadOnlyList<int> JobCategoryIds) : PaginationRequest<GetJobsResponse>;
+    List<int>? JobCategoryIds) : PaginationRequest<GetJobsResponse>;

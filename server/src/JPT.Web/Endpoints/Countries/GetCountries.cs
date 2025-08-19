@@ -9,7 +9,7 @@ internal sealed class GetCountries : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("countries/get-countries", async (
+        app.MapGet("countries", async (
             IMediator mediator,
             CancellationToken cancellationToken) =>
             {

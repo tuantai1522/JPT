@@ -9,7 +9,7 @@ internal sealed class UnSaveJob : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("users/saved-jobs/unsave-job/{jobId:guid}", async (
+        app.MapDelete("users/saved-jobs/unsave-job/{jobId:guid}", async (
             Guid jobId,
             IMediator mediator,
             CancellationToken cancellationToken) =>

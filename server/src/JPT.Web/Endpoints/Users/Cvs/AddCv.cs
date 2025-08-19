@@ -9,7 +9,7 @@ internal sealed class AddCv : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/cvs/{fileId:guid}", async (
+        app.MapPost("users/cvs/add-cv/{fileId:guid}", async (
             Guid fileId,
             IMediator mediator,
             CancellationToken cancellationToken) =>

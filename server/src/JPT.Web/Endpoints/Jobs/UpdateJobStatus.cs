@@ -12,7 +12,7 @@ internal sealed class UpdateJobStatus : IEndpoint
     
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("jobs/job-status/{id:guid}", async (
+        app.MapPatch("jobs/job-status/{id:guid}", async (
             Guid id,
             Request request,
             IMediator mediator,

@@ -3,13 +3,13 @@ using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
 
-namespace JPT.Web.Endpoints.Jobs;
+namespace JPT.Web.Endpoints.JobCategories;
 
 internal sealed class GetJobCategories : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("jobs/job-categories", async (
+        app.MapGet("job-categories", async (
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
@@ -19,6 +19,6 @@ internal sealed class GetJobCategories : IEndpoint
 
                 return result.Match(Results.Ok, CustomResults.Problem);
             })
-            .WithTags(Tags.Jobs);
+            .WithTags(Tags.JobCategories);
     }
 }
