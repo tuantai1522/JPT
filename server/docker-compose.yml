@@ -1,0 +1,41 @@
+name: jpt
+
+services:
+  jpt.db:
+    container_name: jpt.db
+    image: postgres:latest
+    networks: ['jpt_network']
+
+  jpt.api:
+    container_name: jpt.api
+    image: jpt.api
+    networks: ['jpt_network']
+    build:
+      context: .
+      dockerfile: ./src/Jpt.Web/Dockerfile
+
+  jpt.pgadmin:
+    container_name: jpt.pgadmin
+    image: dpage/pgadmin4:latest
+    depends_on:
+      - jpt.db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: tai.bang157@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 123456
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "True"
+      PGADMIN_CONFIG_SERVER_MODE: "True"
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./containers/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    networks: ['jpt_network']
+
+
+networks:
+  jpt_network:
+
+volumes:
+  postgres_jpt: {}
+  pgadmin_data: {}
+
+
