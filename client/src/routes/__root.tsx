@@ -1,11 +1,12 @@
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import { Outlet, createRootRoute } from "@tanstack/react-router";
+import Header from "../features/landingPages/Header";
+import Hero from "../features/landingPages/Hero";
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <div className="p-2 flex gap-2">
-        <Link to="/">Home</Link>
-      </div>
+      <Header />
+      <Hero />
       <Outlet />
     </>
   ),
