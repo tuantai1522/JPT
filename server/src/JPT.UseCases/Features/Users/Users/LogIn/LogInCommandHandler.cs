@@ -26,8 +26,8 @@ internal sealed class LogInCommandHandler(
             return Result.Failure<LogInResponse>(UserErrors.InvalidPassword);
         }
 
-        string accessToken = tokenProvider.Create(user);
+        string token = tokenProvider.Create(user);
 
-        return Result.Success(new LogInResponse(accessToken, user.FirstName, user.Email, user.Role.ToString()));
+        return Result.Success(new LogInResponse(token, user.Id, user.Email, user.Role.ToString()));
     }
 }
