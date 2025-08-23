@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import type { LogInForm } from "../type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logInFormSchema } from "../schema";
+import { useLoginMutation } from "../hooks/mutations/useLoginMutation";
 
 const LoginForm = () => {
   const form = useForm<LogInForm>({
@@ -13,12 +14,20 @@ const LoginForm = () => {
     },
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
-    // form.setError("root", {
-    //   type: "server",
-    //   message: "Đăng nhập thất bại. Vui lòng thử lại.",
-    // });
+  const loginMutation = useLoginMutation();
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    try {
+      const result = await loginMutation.mutateAsync({
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log(result);
+    } catch (err) {
+      //Todo: To handle error
+      console.log(err);
+    }
   });
 
   // After sending data to API successfully, render this UI
