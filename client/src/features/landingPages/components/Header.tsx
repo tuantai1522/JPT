@@ -1,6 +1,6 @@
 import { Briefcase } from "lucide-react";
-import Button from "../shared/ui/Button";
-import NavLink from "../shared/ui/NavLink";
+import Button from "../../shared/ui/Button";
+import NavLink from "../../shared/ui/NavLink";
 
 const Header = () => {
   const isAuthenticated = true;
