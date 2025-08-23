@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthsRegisterRouteImport } from './routes/auths/register'
 import { Route as AuthsLoginRouteImport } from './routes/auths/login'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthsRegisterRoute = AuthsRegisterRouteImport.update({
+  id: '/auths/register',
+  path: '/auths/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthsLoginRoute = AuthsLoginRouteImport.update({
@@ -26,27 +32,31 @@ const AuthsLoginRoute = AuthsLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auths/login': typeof AuthsLoginRoute
+  '/auths/register': typeof AuthsRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auths/login': typeof AuthsLoginRoute
+  '/auths/register': typeof AuthsRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auths/login': typeof AuthsLoginRoute
+  '/auths/register': typeof AuthsRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auths/login'
+  fullPaths: '/' | '/auths/login' | '/auths/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auths/login'
-  id: '__root__' | '/' | '/auths/login'
+  to: '/' | '/auths/login' | '/auths/register'
+  id: '__root__' | '/' | '/auths/login' | '/auths/register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthsLoginRoute: typeof AuthsLoginRoute
+  AuthsRegisterRoute: typeof AuthsRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auths/register': {
+      id: '/auths/register'
+      path: '/auths/register'
+      fullPath: '/auths/register'
+      preLoaderRoute: typeof AuthsRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auths/login': {
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthsLoginRoute: AuthsLoginRoute,
+  AuthsRegisterRoute: AuthsRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
