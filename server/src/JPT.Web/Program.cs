@@ -30,6 +30,10 @@ if (app.Environment.IsDevelopment())
 // Use global custom exception handler
 app.UseExceptionHandler();
 
+app.UseCors("AllowFE");            
+app.UseAuthentication();  
+app.UseAuthorization();
+
 app.UseHttpsRedirection();
 
 app.Run();
