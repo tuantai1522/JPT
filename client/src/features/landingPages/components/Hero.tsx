@@ -36,8 +36,11 @@ const Hero = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-              {stats.map((stat) => (
-                <div className="flex flex-col items-center space-y-2 p-4 rounded-xl hover:bg-gray-50 transition-colors">
+              {stats.map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center space-y-2 p-4 rounded-xl hover:bg-gray-50 transition-colors"
+                >
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mb-2">
                     <stat.icon />
                   </div>
