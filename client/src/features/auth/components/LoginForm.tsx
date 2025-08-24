@@ -17,21 +17,26 @@ const LoginForm = () => {
   const loginMutation = useLoginMutation();
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    try {
-      const result = await loginMutation.mutateAsync({
-        email: data.email,
-        password: data.password,
-      });
-
-      console.log(result);
-    } catch (err) {
-      //Todo: To handle error
-      console.log(err);
-    }
+    loginMutation.mutateAsync(data, {
+      onSuccess: (data) => {
+        console.log("Đăng nhập thành công", data);
+        console.log(data.email);
+        console.log(data.id);
+        console.log(data.token);
+        console.log(data.userRole);
+      },
+      onError: (err) => {
+        const be = err.response?.data;
+        form.setError("root", {
+          type: "server",
+          message: be?.detail ?? "Lỗi đăng nhập",
+        });
+      },
+    });
   });
 
   // After sending data to API successfully, render this UI
-  if (form.formState.isSubmitSuccessful) {
+  if (loginMutation.isSuccess) {
     return (
       <>
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -52,6 +57,7 @@ const LoginForm = () => {
       </>
     );
   }
+
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
