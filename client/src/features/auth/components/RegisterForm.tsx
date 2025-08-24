@@ -5,10 +5,9 @@ import type { RegisterFormSchema } from "../type";
 import { userRoleValues } from "../../shared/schema";
 import { registerFormSchema } from "../schema";
 import { useUploadFile } from "../../shared/hooks/mutations/useUploadFile";
+import { useRegister } from "../hooks/mutations/useRegister";
 
 const RegisterForm = () => {
-  const success = false;
-
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -22,9 +21,24 @@ const RegisterForm = () => {
   });
 
   const uploadFileMutation = useUploadFile();
+  const registerMutation = useRegister();
 
   const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
+    registerMutation.mutateAsync(data, {
+      onSuccess: (data) => {
+        console.log("Đăng ký thành công", data);
+      },
+      onError: (err) => {
+        const data = err.response?.data;
+        form.setError("root", {
+          type: "server",
+          message:
+            data?.errors && data?.errors.length > 0
+              ? data?.errors.map((e) => e.description).join("\n")
+              : data?.detail,
+        });
+      },
+    });
   });
 
   const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,16 +61,19 @@ const RegisterForm = () => {
         form.setValue("avatarPath", data.path);
       },
       onError: (err) => {
-        const be = err.response?.data;
+        const data = err.response?.data;
         form.setError("root", {
           type: "server",
-          message: be?.detail,
+          message:
+            data?.errors && data?.errors.length > 0
+              ? data?.errors.map((e) => e.description).join("\n")
+              : data?.detail,
         });
       },
     });
   };
 
-  if (success) {
+  if (registerMutation.isSuccess) {
     return (
       <>
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -70,7 +87,7 @@ const RegisterForm = () => {
             </p>
             <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
             <p className="text-sm text-gray-500 mt-2">
-              Redirecting to your dashboard...
+              Please provide me your new email and password to log in...
             </p>
           </div>
         </div>
@@ -261,7 +278,10 @@ const RegisterForm = () => {
                 </div>
 
                 {form.formState.errors.avatarId && (
-                  <p id="avatarId" className="mt-1 text-sm text-red-500">
+                  <p
+                    id="avatarId"
+                    className="mt-1 text-sm text-red-500 whitespace-pre-line"
+                  >
                     {form.formState.errors.avatarId.message}
                   </p>
                 )}
@@ -329,6 +349,12 @@ const RegisterForm = () => {
                   </div>
                 </div>
               </div>
+
+              {form.formState.errors.root?.message && (
+                <div className="text-red-600 text-sm text-center whitespace-pre-line">
+                  {form.formState.errors.root.message}
+                </div>
+              )}
 
               {/* Submit button */}
               <button
