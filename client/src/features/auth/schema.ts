@@ -24,6 +24,7 @@ export const registerFormSchema = z
       .min(8, "Password must be at least 8 characters")
       .max(128),
     avatarId: z.uuid().optional(),
+    avatarPath: z.string().optional(),
     logoId: z.uuid().optional(),
     role: z.enum(userRoleValues),
     companyName: z.string().max(128),

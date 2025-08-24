@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import type { RegisterFormSchema } from "../type";
 import { userRoleValues } from "../../shared/schema";
 import { registerFormSchema } from "../schema";
+import { useUploadFile } from "../../shared/hooks/mutations/useUploadFile";
 
 const RegisterForm = () => {
   const success = false;
@@ -20,9 +21,40 @@ const RegisterForm = () => {
     },
   });
 
+  const uploadFileMutation = useUploadFile();
+
   const handleSubmit = form.handleSubmit((data) => {
     console.log(data);
   });
+
+  const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const data = e.target.files?.[0];
+    if (!data) {
+      return;
+    }
+
+    uploadFileMutation.mutateAsync(data, {
+      onSuccess: (data) => {
+        console.log("Tải fiile thành công", data);
+
+        // Set AvatarId
+        form.setValue("avatarId", data.fileId, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+
+        // Set AvatarPath
+        form.setValue("avatarPath", data.path);
+      },
+      onError: (err) => {
+        const be = err.response?.data;
+        form.setError("root", {
+          type: "server",
+          message: be?.detail,
+        });
+      },
+    });
+  };
 
   if (success) {
     return (
@@ -197,10 +229,23 @@ const RegisterForm = () => {
 
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-                    <User className="w-8 h-8 text-gray-400" />
+                    {form.watch("avatarPath") ? (
+                      <img
+                        src={form.watch("avatarPath")}
+                        alt="avatar"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-8 h-8 text-gray-400" />
+                    )}
                   </div>
                   <div className="flex-1">
-                    <input id="avatarId" type="file" className="hidden" />
+                    <input
+                      onChange={handleUploadFile}
+                      id="avatarId"
+                      type="file"
+                      className="hidden"
+                    />
 
                     <label
                       htmlFor="avatarId"

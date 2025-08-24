@@ -5,4 +5,7 @@ export const API_PATHS = {
     GET_CURRENT_USER: "/users",
     LOG_IN: "/users/login",
   },
+  FILES: {
+    UPLOAD: "/files",
+  },
 };
