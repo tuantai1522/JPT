@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { postLogin } from "../../apis/api.auth";
+import { login } from "../../apis/api.Login";
 import type { LoginResponse, LoginRequest } from "../../type";
 import type { AxiosError } from "axios";
 import type { BaseError } from "../../../shared/types/baseError";
 
-export const useLoginMutation = () =>
+export const useLogin = () =>
   useMutation<LoginResponse, AxiosError<BaseError>, LoginRequest>({
-    mutationFn: postLogin,
+    mutationFn: login,
   });

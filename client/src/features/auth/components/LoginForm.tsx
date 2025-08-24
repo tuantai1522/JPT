@@ -1,12 +1,12 @@
 import { CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
-import type { LogInForm } from "../type";
+import type { LogInFormSchema } from "../type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logInFormSchema } from "../schema";
-import { useLoginMutation } from "../hooks/mutations/useLoginMutation";
+import { useLogin } from "../hooks/mutations/useLogin";
 
 const LoginForm = () => {
-  const form = useForm<LogInForm>({
+  const form = useForm<LogInFormSchema>({
     resolver: zodResolver(logInFormSchema),
     defaultValues: {
       email: "",
@@ -14,7 +14,7 @@ const LoginForm = () => {
     },
   });
 
-  const loginMutation = useLoginMutation();
+  const loginMutation = useLogin();
 
   const handleSubmit = form.handleSubmit(async (data) => {
     loginMutation.mutateAsync(data, {

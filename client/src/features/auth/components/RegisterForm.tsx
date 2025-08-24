@@ -1,14 +1,14 @@
 import { Building2, CheckCircle, Upload, User, UserCheck } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { RegisterForm } from "../type";
+import type { RegisterFormSchema } from "../type";
 import { userRoleValues } from "../../shared/schema";
 import { registerFormSchema } from "../schema";
 
 const RegisterForm = () => {
   const success = false;
 
-  const form = useForm<RegisterForm>({
+  const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       firstName: "",
@@ -298,12 +298,12 @@ const RegisterForm = () => {
 
               {/* Sign in link */}
               <div className="text-center">
-                <p className="text-gray-600 flex flex-row items-center justify-center gap-1">
+                <div className="text-gray-600 flex flex-row items-center justify-center gap-1">
                   <p>Already have an account?</p>
                   <a className="text-blue-600 hover:text-blue-700 font-medium">
                     Sign in here
                   </a>
-                </p>
+                </div>
               </div>
             </div>
           </form>
