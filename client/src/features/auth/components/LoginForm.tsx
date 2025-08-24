@@ -26,10 +26,13 @@ const LoginForm = () => {
         console.log(data.userRole);
       },
       onError: (err) => {
-        const be = err.response?.data;
+        const data = err.response?.data;
         form.setError("root", {
           type: "server",
-          message: be?.detail ?? "Lỗi đăng nhập",
+          message:
+            data?.errors && data?.errors.length > 0
+              ? data?.errors.map((e) => e.description).join("\n")
+              : data?.detail,
         });
       },
     });
@@ -112,10 +115,10 @@ const LoginForm = () => {
               )}
             </div>
 
-            {form.formState.errors.root && (
-              <p className="text-sm text-red-600 text-center">
-                {String(form.formState.errors.root.message)}
-              </p>
+            {form.formState.errors.root?.message && (
+              <div className="text-red-600 text-sm text-center whitespace-pre-line">
+                {form.formState.errors.root.message}
+              </div>
             )}
 
             {/* Submit button */}
