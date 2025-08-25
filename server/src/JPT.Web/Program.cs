@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGenWithAuth();
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
-    .AddWeb();
+    .AddWeb(builder.Configuration);
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
 // Use global custom exception handler
 app.UseExceptionHandler();
 
-app.UseCors("AllowFE");            
+app.UseCors();            
 app.UseAuthentication();  
 app.UseAuthorization();
 

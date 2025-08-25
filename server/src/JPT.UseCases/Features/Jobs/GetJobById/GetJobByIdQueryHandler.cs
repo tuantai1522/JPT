@@ -53,7 +53,7 @@ public class GetJobByIdQueryHandler(
                     .Where(s => s.JobId == job.Id && s.ApplicantId == userId)
                     .OrderByDescending(s => s.AppliedAt)
                     .Select(s => s.Status.ToString())
-                    .FirstOrDefault(),         
+                    .FirstOrDefault() ?? JobApplicationStatus.Applied.ToString(),         
                 job.CreatedAt,
                 job.UpdatedAt
             );
