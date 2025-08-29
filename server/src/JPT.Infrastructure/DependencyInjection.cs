@@ -10,9 +10,11 @@ using JPT.Infrastructure.Options;
 using JPT.Infrastructure.Options.Files;
 using JPT.Infrastructure.Options.Jwts;
 using JPT.Infrastructure.Repositories;
+using JPT.Infrastructure.WebStorages;
 using JPT.UseCases.Abstractions.Authentication;
 using JPT.UseCases.Abstractions.Data;
 using JPT.UseCases.Abstractions.Files;
+using JPT.UseCases.Abstractions.WebStorages;
 using JPT.UseCases.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -87,6 +89,8 @@ public static class DependencyInjection
         
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
+
+        services.AddScoped<ICookieService, CookieService>();
 
         return services;
     }
