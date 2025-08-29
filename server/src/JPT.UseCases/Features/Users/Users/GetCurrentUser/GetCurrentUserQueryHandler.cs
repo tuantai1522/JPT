@@ -14,17 +14,17 @@ internal sealed class GetCurrentUserQueryHandler(
     {
         var userId = userProvider.UserId;
         var user = await userRepository.GetUserByIdAsync(userId, cancellationToken);
-
+        
         if (user is null)
         {
             return Result.Failure<GetCurrentUserResponse>(UserErrors.NotFoundByEmail);
         }
         
-        string accessToken = tokenProvider.Create(user);
+        string accessToken = tokenProvider.CreateAccessToken(user);
 
         var response = new GetCurrentUserResponse(
             user.Id,
-            user.Email,
+            user.FirstName,
             user.Role.ToString(),
             accessToken
         );
