@@ -8,6 +8,7 @@ using JPT.Infrastructure.Database;
 using JPT.Infrastructure.Files;
 using JPT.Infrastructure.Options;
 using JPT.Infrastructure.Options.Files;
+using JPT.Infrastructure.Options.Jwts;
 using JPT.Infrastructure.Repositories;
 using JPT.UseCases.Abstractions.Authentication;
 using JPT.UseCases.Abstractions.Data;
@@ -73,9 +74,9 @@ public static class DependencyInjection
             opt.RequireHttpsMetadata = false;
             opt.TokenValidationParameters = new TokenValidationParameters
             {
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtOptions:AccessTokenKey"]!)),
+                ValidIssuer = configuration["JwtOptions:Issuer"],
+                ValidAudience = configuration["JwtOptions:Audience"],
                 ClockSkew = TimeSpan.Zero
             };
         });
@@ -103,6 +104,9 @@ public static class DependencyInjection
 
         services.AddSingleton<IFileOptions, FileOptionsProvider>();
         services.AddOptionsWithFluentValidation<FileOptions>(nameof(FileOptions));
+        
+        services.AddSingleton<IJwtOptions, JwtOptionsProvider>();
+        services.AddOptionsWithFluentValidation<JwtOptions>(nameof(JwtOptions));
         
         services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
 
