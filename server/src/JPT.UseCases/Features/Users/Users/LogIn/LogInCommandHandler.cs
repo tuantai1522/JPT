@@ -1,12 +1,16 @@
 ﻿using JPT.Core.Common;
 using JPT.Core.Features.Users;
 using JPT.UseCases.Abstractions.Authentication;
+using JPT.UseCases.Abstractions.WebStorages;
+using JPT.UseCases.Options;
 using MediatR;
 
 namespace JPT.UseCases.Features.Users.Users.LogIn;
 
 internal sealed class LogInCommandHandler(
     ITokenProvider tokenProvider,
+    ICookieService cookieService,
+    IJwtOptions jwtOptions,
     IUserRepository userRepository,
     IPasswordHasher passwordHasher): IRequestHandler<LogInCommand, Result<LogInResponse>>
 {
@@ -26,8 +30,12 @@ internal sealed class LogInCommandHandler(
             return Result.Failure<LogInResponse>(UserErrors.InvalidPassword);
         }
 
-        string token = tokenProvider.Create(user);
+        string accessToken = tokenProvider.CreateAccessToken(user);
+        string refreshToken = tokenProvider.CreateRefreshToken(user);
+        
+        // Set cookie of refreshToken
+        cookieService.Set(Constant.RefreshTokenCookieName, refreshToken, DateTimeOffset.UtcNow.AddMinutes(jwtOptions.ExpiredRefreshToken));
 
-        return Result.Success(new LogInResponse(token, user.Id, user.Email, user.Role.ToString()));
+        return Result.Success(new LogInResponse(accessToken, user.Id, user.Email, user.Role.ToString()));
     }
 }
