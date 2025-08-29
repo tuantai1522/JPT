@@ -71,4 +71,12 @@ public static class UserErrors
     public static readonly Error UserNotSaveThisJobBefore = Error.Validation(
         "Users.UserNotSaveThisJobBefore",
         $"This job is not saved by user before. Please check again.");
+    
+    public static readonly Error NotFoundRefreshToken = Error.Validation(
+        "Users.NotFoundRefreshToken",
+        $"Can not found refresh token. Please try again.");
+    
+    public static readonly Error InvalidRefreshToken = Error.Validation(
+        "Users.InvalidRefreshToken",
+        $"Refresh token is invalid.");
 }
