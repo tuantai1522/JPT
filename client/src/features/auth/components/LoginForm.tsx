@@ -4,8 +4,10 @@ import type { LogInFormSchema } from "../type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logInFormSchema } from "../schema";
 import { useLogin } from "../hooks/mutations/useLogin";
+import { useAuth } from "../hooks/useAuth";
 
 const LoginForm = () => {
+  const { setToken } = useAuth();
   const form = useForm<LogInFormSchema>({
     resolver: zodResolver(logInFormSchema),
     defaultValues: {
@@ -19,11 +21,7 @@ const LoginForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     loginMutation.mutateAsync(data, {
       onSuccess: (data) => {
-        console.log("Đăng nhập thành công", data);
-        console.log(data.email);
-        console.log(data.id);
-        console.log(data.token);
-        console.log(data.userRole);
+        setToken(data.token);
       },
       onError: (err) => {
         const data = err.response?.data;

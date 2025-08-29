@@ -5,6 +5,7 @@ export const API_PATHS = {
     GET_CURRENT_USER: "/users",
     LOG_IN: "/users/login",
     REGISTER: "/users",
+    REFRESH_TOKEN: "/users/refresh-token",
   },
   FILES: {
     UPLOAD: "/files",

@@ -1,14 +1,10 @@
 import { Briefcase } from "lucide-react";
 import Button from "../../shared/ui/Button";
 import NavLink from "../../shared/ui/NavLink";
+import { useGetCurrentUser } from "../../shared/hooks/queries/useGetCurrentUser";
 
 const Header = () => {
-  const isAuthenticated = true;
-  const user = {
-    firstName: "John",
-    middleName: "Doe",
-    role: "employer",
-  };
+  const user = useGetCurrentUser();
 
   return (
     <header>
@@ -27,13 +23,15 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-3">
-            {isAuthenticated ? (
+            {user.data ? (
               <div className="flex items-center space-x-3">
-                <span className="text-gray-700">Welcome {user.firstName}</span>
+                <span className="text-gray-700">
+                  Welcome {user.data.firstName}
+                </span>
                 <Button>Dashboard</Button>
               </div>
             ) : (
-              <div>
+              <div className="flex">
                 <NavLink className="px-4 py-2 rounded-lg hover:bg-gray-50">
                   Log in
                 </NavLink>
