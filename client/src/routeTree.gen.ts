@@ -9,86 +9,128 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthsRegisterRouteImport } from './routes/auths/register'
-import { Route as AuthsLoginRouteImport } from './routes/auths/login'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AppJobSeekersIndexRouteImport } from './routes/_app/jobSeekers/index'
+import { Route as AppEmployersIndexRouteImport } from './routes/_app/employers/index'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/_app/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthsRegisterRoute = AuthsRegisterRouteImport.update({
-  id: '/auths/register',
-  path: '/auths/register',
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/_auth/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthsLoginRoute = AuthsLoginRouteImport.update({
-  id: '/auths/login',
-  path: '/auths/login',
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/_auth/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppJobSeekersIndexRoute = AppJobSeekersIndexRouteImport.update({
+  id: '/_app/jobSeekers/',
+  path: '/jobSeekers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppEmployersIndexRoute = AppEmployersIndexRouteImport.update({
+  id: '/_app/employers/',
+  path: '/employers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/auths/login': typeof AuthsLoginRoute
-  '/auths/register': typeof AuthsRegisterRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/': typeof AppIndexRoute
+  '/employers': typeof AppEmployersIndexRoute
+  '/jobSeekers': typeof AppJobSeekersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auths/login': typeof AuthsLoginRoute
-  '/auths/register': typeof AuthsRegisterRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/': typeof AppIndexRoute
+  '/employers': typeof AppEmployersIndexRoute
+  '/jobSeekers': typeof AppJobSeekersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/auths/login': typeof AuthsLoginRoute
-  '/auths/register': typeof AuthsRegisterRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/employers/': typeof AppEmployersIndexRoute
+  '/_app/jobSeekers/': typeof AppJobSeekersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auths/login' | '/auths/register'
+  fullPaths: '/login' | '/register' | '/' | '/employers' | '/jobSeekers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auths/login' | '/auths/register'
-  id: '__root__' | '/' | '/auths/login' | '/auths/register'
+  to: '/login' | '/register' | '/' | '/employers' | '/jobSeekers'
+  id:
+    | '__root__'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_app/'
+    | '/_app/employers/'
+    | '/_app/jobSeekers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthsLoginRoute: typeof AuthsLoginRoute
-  AuthsRegisterRoute: typeof AuthsRegisterRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppEmployersIndexRoute: typeof AppEmployersIndexRoute
+  AppJobSeekersIndexRoute: typeof AppJobSeekersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auths/register': {
-      id: '/auths/register'
-      path: '/auths/register'
-      fullPath: '/auths/register'
-      preLoaderRoute: typeof AuthsRegisterRouteImport
+    '/_auth/register': {
+      id: '/_auth/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auths/login': {
-      id: '/auths/login'
-      path: '/auths/login'
-      fullPath: '/auths/login'
-      preLoaderRoute: typeof AuthsLoginRouteImport
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/jobSeekers/': {
+      id: '/_app/jobSeekers/'
+      path: '/jobSeekers'
+      fullPath: '/jobSeekers'
+      preLoaderRoute: typeof AppJobSeekersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/employers/': {
+      id: '/_app/employers/'
+      path: '/employers'
+      fullPath: '/employers'
+      preLoaderRoute: typeof AppEmployersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthsLoginRoute: AuthsLoginRoute,
-  AuthsRegisterRoute: AuthsRegisterRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppEmployersIndexRoute: AppEmployersIndexRoute,
+  AppJobSeekersIndexRoute: AppJobSeekersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

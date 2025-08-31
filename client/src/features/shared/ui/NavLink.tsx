@@ -9,12 +9,12 @@ type NavLinkProps = {
 
 export default function NavLink({
   children,
-  href = "#",
+  href,
   className,
   ...props
 }: NavLinkProps) {
   const base =
-    "text-gray-600 hover:text-gray-900 transition-colors font-medium";
+    "text-gray-600 hover:text-gray-900 transition-colors font-medium cursor-pointer";
 
   return (
     <a href={href} {...props} className={twMerge(base, className)}>

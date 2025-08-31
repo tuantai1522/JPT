@@ -2,9 +2,11 @@ import { Briefcase } from "lucide-react";
 import Button from "../../shared/ui/Button";
 import NavLink from "../../shared/ui/NavLink";
 import { useGetCurrentUser } from "../../shared/hooks/queries/useGetCurrentUser";
+import { useNavigate } from "@tanstack/react-router";
 
 const Header = () => {
   const user = useGetCurrentUser();
+  const navigate = useNavigate();
 
   return (
     <header>
@@ -32,10 +34,15 @@ const Header = () => {
               </div>
             ) : (
               <div className="flex">
-                <NavLink className="px-4 py-2 rounded-lg hover:bg-gray-50">
+                <NavLink
+                  onClick={() => navigate({ to: "/login" })}
+                  className="px-4 py-2 rounded-lg hover:bg-gray-50"
+                >
                   Log in
                 </NavLink>
-                <Button>Sign up</Button>
+                <Button onClick={() => navigate({ to: "/register" })}>
+                  Sign up
+                </Button>
               </div>
             )}
           </div>

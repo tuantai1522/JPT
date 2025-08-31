@@ -5,9 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { logInFormSchema } from "../schema";
 import { useLogin } from "../hooks/mutations/useLogin";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginForm = () => {
   const { setToken } = useAuth();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const form = useForm<LogInFormSchema>({
     resolver: zodResolver(logInFormSchema),
     defaultValues: {
@@ -20,8 +25,17 @@ const LoginForm = () => {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     loginMutation.mutateAsync(data, {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setToken(data.token);
+
+        // 🔑 Triggers useGetCurrentUser to fetch user again
+        await queryClient.invalidateQueries({ queryKey: ["me"] });
+
+        setTimeout(() => {
+          navigate({
+            to: data.userRole === "Employer" ? "/employers" : "/jobSeekers",
+          });
+        }, 2000);
       },
       onError: (err) => {
         const data = err.response?.data;
@@ -133,7 +147,10 @@ const LoginForm = () => {
           <div className="text-center mt-6">
             <p className="text-gray-600">
               Don't have an account?{" "}
-              <a className="text-blue-600 hover:text-blue-700 font-medium">
+              <a
+                onClick={() => navigate({ to: "/register" })}
+                className="text-blue-600 hover:text-blue-700 font-medium"
+              >
                 Create one here
               </a>
             </p>

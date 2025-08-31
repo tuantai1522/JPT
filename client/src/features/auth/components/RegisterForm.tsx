@@ -6,6 +6,7 @@ import { userRoleValues } from "../../shared/schema";
 import { registerFormSchema } from "../schema";
 import { useUploadFile } from "../../shared/hooks/mutations/useUploadFile";
 import { useRegister } from "../hooks/mutations/useRegister";
+import { useNavigate } from "@tanstack/react-router";
 
 const RegisterForm = () => {
   const form = useForm<RegisterFormSchema>({
@@ -22,6 +23,7 @@ const RegisterForm = () => {
 
   const uploadFileMutation = useUploadFile();
   const registerMutation = useRegister();
+  const navigate = useNavigate();
 
   const handleSubmit = form.handleSubmit((data) => {
     registerMutation.mutateAsync(data, {
@@ -371,7 +373,10 @@ const RegisterForm = () => {
               <div className="text-center">
                 <div className="text-gray-600 flex flex-row items-center justify-center gap-1">
                   <p>Already have an account?</p>
-                  <a className="text-blue-600 hover:text-blue-700 font-medium">
+                  <a
+                    onClick={() => navigate({ to: "/login" })}
+                    className="text-blue-600 hover:text-blue-700 font-medium"
+                  >
                     Sign in here
                   </a>
                 </div>
