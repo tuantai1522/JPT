@@ -4,7 +4,7 @@ import type { LogInFormSchema } from "../type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logInFormSchema } from "../schema";
 import { useLogin } from "../hooks/mutations/useLogin";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 

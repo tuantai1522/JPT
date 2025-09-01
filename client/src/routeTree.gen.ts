@@ -9,15 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthUnauthorizedRouteImport } from './routes/_auth/unauthorized'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AppJobSeekersIndexRouteImport } from './routes/_app/jobSeekers/index'
 import { Route as AppEmployersIndexRouteImport } from './routes/_app/employers/index'
 
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/_app/',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthUnauthorizedRoute = AuthUnauthorizedRouteImport.update({
+  id: '/_auth/unauthorized',
+  path: '/unauthorized',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -42,56 +48,80 @@ const AppEmployersIndexRoute = AppEmployersIndexRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/': typeof AppIndexRoute
+  '/unauthorized': typeof AuthUnauthorizedRoute
   '/employers': typeof AppEmployersIndexRoute
   '/jobSeekers': typeof AppJobSeekersIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/': typeof AppIndexRoute
+  '/unauthorized': typeof AuthUnauthorizedRoute
   '/employers': typeof AppEmployersIndexRoute
   '/jobSeekers': typeof AppJobSeekersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
-  '/_app/': typeof AppIndexRoute
+  '/_auth/unauthorized': typeof AuthUnauthorizedRoute
   '/_app/employers/': typeof AppEmployersIndexRoute
   '/_app/jobSeekers/': typeof AppJobSeekersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/register' | '/' | '/employers' | '/jobSeekers'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/unauthorized'
+    | '/employers'
+    | '/jobSeekers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/' | '/employers' | '/jobSeekers'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/unauthorized'
+    | '/employers'
+    | '/jobSeekers'
   id:
     | '__root__'
+    | '/'
     | '/_auth/login'
     | '/_auth/register'
-    | '/_app/'
+    | '/_auth/unauthorized'
     | '/_app/employers/'
     | '/_app/jobSeekers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
-  AppIndexRoute: typeof AppIndexRoute
+  AuthUnauthorizedRoute: typeof AuthUnauthorizedRoute
   AppEmployersIndexRoute: typeof AppEmployersIndexRoute
   AppJobSeekersIndexRoute: typeof AppJobSeekersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_app/': {
-      id: '/_app/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AppIndexRouteImport
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/unauthorized': {
+      id: '/_auth/unauthorized'
+      path: '/unauthorized'
+      fullPath: '/unauthorized'
+      preLoaderRoute: typeof AuthUnauthorizedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/register': {
@@ -126,9 +156,10 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
-  AppIndexRoute: AppIndexRoute,
+  AuthUnauthorizedRoute: AuthUnauthorizedRoute,
   AppEmployersIndexRoute: AppEmployersIndexRoute,
   AppJobSeekersIndexRoute: AppJobSeekersIndexRoute,
 }

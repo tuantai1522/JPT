@@ -1,8 +1,8 @@
 import { createContext, use, type Dispatch, type SetStateAction } from "react";
 
 type AuthState = {
-  token: string | undefined;
-  setToken: Dispatch<SetStateAction<string | undefined>>;
+  token?: string | null;
+  setToken: Dispatch<SetStateAction<string | null | undefined>>;
 };
 
 export const AuthContext = createContext<AuthState | undefined>(undefined);

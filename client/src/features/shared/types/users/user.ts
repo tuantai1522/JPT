@@ -1,8 +1,7 @@
 import type { UserRole } from "./userRole";
 
-export type GetCurrentUserResponse = {
+export type User = {
   id: string;
   firstName: string;
   role: UserRole;
-  token: string;
 };

@@ -1,12 +1,12 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { AuthContext } from "../hooks/useAuth";
+import { AuthContext } from "../contexts/useAuth";
 import { api } from "../../../lib/utils/api";
 import { API_PATHS } from "../../shared/utils/apiPaths";
 import type { GetCurrentUserResponse } from "../../shared/types/users/getCurrentUser";
 import type { RefreshTokenResponse } from "../../shared/types/users/refreshToken";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState<string | undefined>(undefined);
+  const [token, setToken] = useState<string | null>();
 
   useEffect(() => {
     const fetchMe = async () => {

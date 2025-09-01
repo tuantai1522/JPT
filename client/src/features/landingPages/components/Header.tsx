@@ -5,8 +5,12 @@ import { useGetCurrentUser } from "../../shared/hooks/queries/useGetCurrentUser"
 import { useNavigate } from "@tanstack/react-router";
 
 const Header = () => {
-  const user = useGetCurrentUser();
+  const { data: user, isLoading } = useGetCurrentUser();
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return <div>...</div>;
+  }
 
   return (
     <header>
@@ -25,11 +29,9 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-3">
-            {user.data ? (
+            {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-gray-700">
-                  Welcome {user.data.firstName}
-                </span>
+                <span className="text-gray-700">Welcome {user.firstName}</span>
                 <Button>Dashboard</Button>
               </div>
             ) : (
