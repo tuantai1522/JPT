@@ -1,5 +1,5 @@
 import { api } from "../../../../lib/utils/api";
-import type { GetCurrentUserResponse } from "../../types/users/getCurrentUser";
+import type { GetCurrentUserResponse } from "../../types/users/getCurrentUser.types";
 import { API_PATHS } from "../../utils/apiPaths";
 
 export const getCurrentUser = async (): Promise<GetCurrentUserResponse> => {

@@ -1,12 +1,14 @@
 import { Building2, CheckCircle, Upload, User, UserCheck } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { RegisterFormSchema } from "../type";
-import { userRoleValues } from "../../shared/schema";
-import { registerFormSchema } from "../schema";
 import { useUploadFile } from "../../shared/hooks/mutations/useUploadFile";
 import { useRegister } from "../hooks/mutations/useRegister";
 import { useNavigate } from "@tanstack/react-router";
+import {
+  registerFormSchema,
+  type RegisterFormSchema,
+} from "../schemas/register.schema";
+import { UserRole } from "../../shared/constants/userRole";
 
 const RegisterForm = () => {
   const form = useForm<RegisterFormSchema>({
@@ -17,7 +19,7 @@ const RegisterForm = () => {
       password: "",
       confirmPassword: "",
       companyName: "",
-      role: userRoleValues[0],
+      role: UserRole.JobSeeker,
     },
   });
 

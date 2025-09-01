@@ -1,12 +1,11 @@
 import { CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
-import type { LogInFormSchema } from "../type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { logInFormSchema } from "../schema";
 import { useLogin } from "../hooks/mutations/useLogin";
 import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
+import { logInFormSchema, type LogInFormSchema } from "../schemas/login.schema";
 
 const LoginForm = () => {
   const { setToken } = useAuth();

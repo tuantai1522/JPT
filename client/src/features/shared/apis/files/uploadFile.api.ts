@@ -1,6 +1,6 @@
 import { api } from "../../../../lib/utils/api";
 import { API_PATHS } from "../../utils/apiPaths";
-import type { UploadFileResponse } from "../../types/files/uploadFile";
+import type { UploadFileResponse } from "../../types/files/uploadFile.types";
 
 export const postFile = async (file: File): Promise<UploadFileResponse> => {
   const formData = new FormData();

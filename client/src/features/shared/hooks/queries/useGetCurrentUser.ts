@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import type { GetCurrentUserResponse } from "../../types/users/getCurrentUser";
-import { getCurrentUser } from "../../apis/users/api.getCurrentUser";
+import type { GetCurrentUserResponse } from "../../types/users/getCurrentUser.types";
+import { getCurrentUser } from "../../apis/users/getCurrentUser.api";
 
 export function useGetCurrentUser() {
   return useQuery<GetCurrentUserResponse>({

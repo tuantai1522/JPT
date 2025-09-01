@@ -1,4 +1,4 @@
-import type { UserRole } from "./userRole";
+import type { UserRole } from "../../constants/userRole";
 
 export type GetCurrentUserResponse = {
   id: string;

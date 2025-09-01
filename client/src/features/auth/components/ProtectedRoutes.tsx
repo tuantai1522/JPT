@@ -1,6 +1,6 @@
 import { Navigate } from "@tanstack/react-router";
 import { useGetCurrentUser } from "../../shared/hooks/queries/useGetCurrentUser";
-import type { UserRole } from "../../shared/types/users/userRole";
+import type { UserRole } from "../../shared/constants/userRole";
 import type { PropsWithChildren } from "react";
 
 type ProtectedRoutesProps = PropsWithChildren & {
