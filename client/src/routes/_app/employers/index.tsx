@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import EmployerDashboard from "../../../features/employer/components/EmployerDashboard";
+import EmployerDashboard from "../../../features/employers/components/EmployerDashboard";
 import Header from "../../../features/landingPages/components/Header";
 import { ProtectedRoutes } from "../../../features/auth/components/ProtectedRoutes";
 
