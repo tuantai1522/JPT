@@ -47,6 +47,13 @@ public sealed class User : AggregateRoot, IDateTracking
     public IReadOnlyList<JobApplication> JobApplications => _jobApplications.ToList();
     
     /// <summary>
+    /// List refresh tokens of this user.
+    /// </summary>
+    private readonly List<RefreshToken> _refreshTokens = [];
+    
+    public IReadOnlyList<RefreshToken> RefreshTokens => _refreshTokens.ToList();
+    
+    /// <summary>
     /// List cvs of this user.
     /// </summary>
     private readonly List<Cv> _cvs = [];
@@ -215,5 +222,17 @@ public sealed class User : AggregateRoot, IDateTracking
         _savedJobs.Remove(job);
         
         return Result.Success();
+    }
+
+    public void AddRefreshToken(string token, DateTime expiredAt)
+    {
+        _refreshTokens.Add(RefreshToken.Create(token, Id, expiredAt));
+    }
+
+    public void UpdateExpiredAtOfRefreshToken(string token, DateTime expiredAt)
+    {
+        var refreshToken = _refreshTokens.FirstOrDefault(currentToken => currentToken.Token == token);
+
+        refreshToken?.UpdateExpiredAt(expiredAt);
     }
 }

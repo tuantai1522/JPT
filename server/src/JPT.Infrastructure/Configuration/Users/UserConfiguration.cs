@@ -57,5 +57,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(x => x.Cvs)
             .WithOne()
             .HasForeignKey(u => u.ApplicantId);
+                
+        // One user has multiple RefreshTokens
+        builder.HasMany(x => x.RefreshTokens)
+            .WithOne()
+            .HasForeignKey(u => u.UserId);
     }
 }
