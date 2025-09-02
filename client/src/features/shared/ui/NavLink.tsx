@@ -1,5 +1,5 @@
 // src/components/NavLink.tsx
-import { twMerge } from "tailwind-merge";
+import { cn } from "../../../lib/utils/cn";
 
 type NavLinkProps = {
   children: string;
@@ -17,7 +17,7 @@ export default function NavLink({
     "text-gray-600 hover:text-gray-900 transition-colors font-medium cursor-pointer";
 
   return (
-    <a href={href} {...props} className={twMerge(base, className)}>
+    <a href={href} {...props} className={cn(base, className)}>
       {children}
     </a>
   );

@@ -13,8 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthUnauthorizedRouteImport } from './routes/_auth/unauthorized'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AppEmployersRouteRouteImport } from './routes/_app/employers/route'
 import { Route as AppJobSeekersIndexRouteImport } from './routes/_app/jobSeekers/index'
 import { Route as AppEmployersIndexRouteImport } from './routes/_app/employers/index'
+import { Route as AppEmployersPostJobRouteImport } from './routes/_app/employers/post-job'
+import { Route as AppEmployersManageJobsRouteImport } from './routes/_app/employers/manage-jobs'
+import { Route as AppEmployersCompanyProfileRouteImport } from './routes/_app/employers/company-profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,23 +40,48 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppEmployersRouteRoute = AppEmployersRouteRouteImport.update({
+  id: '/_app/employers',
+  path: '/employers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppJobSeekersIndexRoute = AppJobSeekersIndexRouteImport.update({
   id: '/_app/jobSeekers/',
   path: '/jobSeekers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppEmployersIndexRoute = AppEmployersIndexRouteImport.update({
-  id: '/_app/employers/',
-  path: '/employers/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppEmployersRouteRoute,
 } as any)
+const AppEmployersPostJobRoute = AppEmployersPostJobRouteImport.update({
+  id: '/post-job',
+  path: '/post-job',
+  getParentRoute: () => AppEmployersRouteRoute,
+} as any)
+const AppEmployersManageJobsRoute = AppEmployersManageJobsRouteImport.update({
+  id: '/manage-jobs',
+  path: '/manage-jobs',
+  getParentRoute: () => AppEmployersRouteRoute,
+} as any)
+const AppEmployersCompanyProfileRoute =
+  AppEmployersCompanyProfileRouteImport.update({
+    id: '/company-profile',
+    path: '/company-profile',
+    getParentRoute: () => AppEmployersRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/employers': typeof AppEmployersRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/unauthorized': typeof AuthUnauthorizedRoute
-  '/employers': typeof AppEmployersIndexRoute
+  '/employers/company-profile': typeof AppEmployersCompanyProfileRoute
+  '/employers/manage-jobs': typeof AppEmployersManageJobsRoute
+  '/employers/post-job': typeof AppEmployersPostJobRoute
+  '/employers/': typeof AppEmployersIndexRoute
   '/jobSeekers': typeof AppJobSeekersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -60,15 +89,22 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/unauthorized': typeof AuthUnauthorizedRoute
+  '/employers/company-profile': typeof AppEmployersCompanyProfileRoute
+  '/employers/manage-jobs': typeof AppEmployersManageJobsRoute
+  '/employers/post-job': typeof AppEmployersPostJobRoute
   '/employers': typeof AppEmployersIndexRoute
   '/jobSeekers': typeof AppJobSeekersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app/employers': typeof AppEmployersRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_auth/unauthorized': typeof AuthUnauthorizedRoute
+  '/_app/employers/company-profile': typeof AppEmployersCompanyProfileRoute
+  '/_app/employers/manage-jobs': typeof AppEmployersManageJobsRoute
+  '/_app/employers/post-job': typeof AppEmployersPostJobRoute
   '/_app/employers/': typeof AppEmployersIndexRoute
   '/_app/jobSeekers/': typeof AppJobSeekersIndexRoute
 }
@@ -76,10 +112,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/employers'
     | '/login'
     | '/register'
     | '/unauthorized'
-    | '/employers'
+    | '/employers/company-profile'
+    | '/employers/manage-jobs'
+    | '/employers/post-job'
+    | '/employers/'
     | '/jobSeekers'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -87,24 +127,31 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/unauthorized'
+    | '/employers/company-profile'
+    | '/employers/manage-jobs'
+    | '/employers/post-job'
     | '/employers'
     | '/jobSeekers'
   id:
     | '__root__'
     | '/'
+    | '/_app/employers'
     | '/_auth/login'
     | '/_auth/register'
     | '/_auth/unauthorized'
+    | '/_app/employers/company-profile'
+    | '/_app/employers/manage-jobs'
+    | '/_app/employers/post-job'
     | '/_app/employers/'
     | '/_app/jobSeekers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppEmployersRouteRoute: typeof AppEmployersRouteRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthUnauthorizedRoute: typeof AuthUnauthorizedRoute
-  AppEmployersIndexRoute: typeof AppEmployersIndexRoute
   AppJobSeekersIndexRoute: typeof AppJobSeekersIndexRoute
 }
 
@@ -138,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/employers': {
+      id: '/_app/employers'
+      path: '/employers'
+      fullPath: '/employers'
+      preLoaderRoute: typeof AppEmployersRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/jobSeekers/': {
       id: '/_app/jobSeekers/'
       path: '/jobSeekers'
@@ -147,20 +201,58 @@ declare module '@tanstack/react-router' {
     }
     '/_app/employers/': {
       id: '/_app/employers/'
-      path: '/employers'
-      fullPath: '/employers'
+      path: '/'
+      fullPath: '/employers/'
       preLoaderRoute: typeof AppEmployersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppEmployersRouteRoute
+    }
+    '/_app/employers/post-job': {
+      id: '/_app/employers/post-job'
+      path: '/post-job'
+      fullPath: '/employers/post-job'
+      preLoaderRoute: typeof AppEmployersPostJobRouteImport
+      parentRoute: typeof AppEmployersRouteRoute
+    }
+    '/_app/employers/manage-jobs': {
+      id: '/_app/employers/manage-jobs'
+      path: '/manage-jobs'
+      fullPath: '/employers/manage-jobs'
+      preLoaderRoute: typeof AppEmployersManageJobsRouteImport
+      parentRoute: typeof AppEmployersRouteRoute
+    }
+    '/_app/employers/company-profile': {
+      id: '/_app/employers/company-profile'
+      path: '/company-profile'
+      fullPath: '/employers/company-profile'
+      preLoaderRoute: typeof AppEmployersCompanyProfileRouteImport
+      parentRoute: typeof AppEmployersRouteRoute
     }
   }
 }
 
+interface AppEmployersRouteRouteChildren {
+  AppEmployersCompanyProfileRoute: typeof AppEmployersCompanyProfileRoute
+  AppEmployersManageJobsRoute: typeof AppEmployersManageJobsRoute
+  AppEmployersPostJobRoute: typeof AppEmployersPostJobRoute
+  AppEmployersIndexRoute: typeof AppEmployersIndexRoute
+}
+
+const AppEmployersRouteRouteChildren: AppEmployersRouteRouteChildren = {
+  AppEmployersCompanyProfileRoute: AppEmployersCompanyProfileRoute,
+  AppEmployersManageJobsRoute: AppEmployersManageJobsRoute,
+  AppEmployersPostJobRoute: AppEmployersPostJobRoute,
+  AppEmployersIndexRoute: AppEmployersIndexRoute,
+}
+
+const AppEmployersRouteRouteWithChildren =
+  AppEmployersRouteRoute._addFileChildren(AppEmployersRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppEmployersRouteRoute: AppEmployersRouteRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthUnauthorizedRoute: AuthUnauthorizedRoute,
-  AppEmployersIndexRoute: AppEmployersIndexRoute,
   AppJobSeekersIndexRoute: AppJobSeekersIndexRoute,
 }
 export const routeTree = rootRouteImport
