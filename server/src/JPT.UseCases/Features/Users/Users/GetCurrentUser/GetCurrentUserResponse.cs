@@ -4,5 +4,5 @@ public sealed record GetCurrentUserResponse(
     Guid Id,
     string FirstName,
     string Role,
-    string Token
+    string? AvatarUrl
 );

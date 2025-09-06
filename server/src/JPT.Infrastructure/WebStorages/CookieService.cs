@@ -24,6 +24,12 @@ public sealed class CookieService(IHttpContextAccessor http) : ICookieService
 
     public void Delete(string key)
     {
-        http.HttpContext?.Response.Cookies.Delete(key, new CookieOptions { Path = "/" });
+        http.HttpContext?.Response.Cookies.Delete(key, new CookieOptions
+        {
+            Path = "/",
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            HttpOnly = true
+        });
     }
 }

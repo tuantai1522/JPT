@@ -9,6 +9,7 @@ namespace JPT.UseCases.Features.Users.Users.LogIn;
 
 internal sealed class LogInCommandHandler(
     ITokenProvider tokenProvider,
+    IUnitOfWork unitOfWork,
     ICookieService cookieService,
     IJwtOptions jwtOptions,
     IUserRepository userRepository,
@@ -20,7 +21,7 @@ internal sealed class LogInCommandHandler(
 
         if (user is null)
         {
-            return Result.Failure<LogInResponse>(UserErrors.NotFoundByEmail);
+            return Result.Failure<LogInResponse>(UserErrors.InvalidPassword);
         }
         
         bool verified = passwordHasher.Verify(command.Password, user.HashPassword);
@@ -31,10 +32,16 @@ internal sealed class LogInCommandHandler(
         }
 
         string accessToken = tokenProvider.CreateAccessToken(user);
-        string refreshToken = tokenProvider.CreateRefreshToken(user);
         
-        // Set cookie of refreshToken
-        cookieService.Set(Constant.RefreshTokenCookieName, refreshToken, DateTimeOffset.UtcNow.AddMinutes(jwtOptions.ExpiredRefreshToken));
+        // To store refresh token in database
+        string refreshToken = tokenProvider.CreateRefreshToken();
+        var expiredAt = DateTimeOffset.UtcNow.AddMinutes(jwtOptions.ExpiredRefreshToken);
+        
+        user.AddRefreshToken(refreshToken, expiredAt.UtcDateTime);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        
+        // Set cookie of refreshToken in browser
+        cookieService.Set(Constant.RefreshTokenCookieName, refreshToken, expiredAt);
 
         return Result.Success(new LogInResponse(accessToken, user.Id, user.Email, user.Role.ToString()));
     }
