@@ -14,7 +14,7 @@ internal sealed class GetCurrentUserQueryHandler(
     public async Task<Result<GetCurrentUserResponse>> Handle(GetCurrentUserQuery query, CancellationToken cancellationToken)
     {
         var userId = userProvider.UserId;
-        var user = await userRepository.GetUserByIdAsync(userId, cancellationToken);
+        var user = await userRepository.GetUserByIdAsync(userId, cancellationToken, u => u.Company);
         
         if (user is null)
         {
@@ -32,7 +32,7 @@ internal sealed class GetCurrentUserQueryHandler(
                 avatarUrl = avatar.Path;
             }
         }
-        var response = new GetCurrentUserResponse(user.Id, user.FirstName, user.Role.ToString(), avatarUrl);
+        var response = new GetCurrentUserResponse(user.Id, user.FirstName, user.Role.ToString(), user.Email, avatarUrl, user.Company?.Name);
         
         return Result.Success(response);
     }

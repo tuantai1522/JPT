@@ -3,6 +3,7 @@ import { AuthContext } from "../contexts/useAuth";
 import { api } from "../../../lib/utils/api";
 import { API_PATHS } from "../../shared/utils/apiPaths";
 import type { RenewAccessTokenResponse } from "../../shared/types/users/renewToken.types";
+import type { GetAccessTokenResponse } from "../../shared/types/users/getAccesToken.types";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>();
@@ -10,8 +11,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const response = await api.get<RenewAccessTokenResponse>(
-          API_PATHS.USERS.RENEW_TOKEN
+        const response = await api.get<GetAccessTokenResponse>(
+          API_PATHS.USERS.GET_ACCESS_TOKEN
         );
         setToken(response?.data?.token);
       } catch {
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             );
             setToken(response?.data?.token);
 
-            originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
+            originalRequest.headers.Authorization = `Bearer ${response?.data?.token}`;
             originalRequest.__retry = true;
 
             return api(originalRequest);

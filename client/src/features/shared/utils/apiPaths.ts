@@ -7,6 +7,7 @@ export const API_PATHS = {
     LOG_OUT: "/users/logout",
     REGISTER: "/users",
     RENEW_TOKEN: "/users/renew-access-token",
+    GET_ACCESS_TOKEN: "/users/get-access-token",
   },
   FILES: {
     UPLOAD: "/files",
