@@ -15,7 +15,6 @@ public sealed class UserRepository(ApplicationDbContext context) : IUserReposito
     public async Task<User?> FindUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
         return await _context.Set<User>()
-            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
     }
 

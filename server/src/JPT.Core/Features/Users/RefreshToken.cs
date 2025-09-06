@@ -1,6 +1,8 @@
+using JPT.Core.Common;
+
 namespace JPT.Core.Features.Users;
 
-public sealed class RefreshToken
+public sealed class RefreshToken : IBaseEntity
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 
@@ -26,4 +28,5 @@ public sealed class RefreshToken
     }
 
     internal void UpdateExpiredAt(DateTime expiredAt) => ExpiredAt = expiredAt;
+    internal void UpdateToken(string token) => Token = token;
 }

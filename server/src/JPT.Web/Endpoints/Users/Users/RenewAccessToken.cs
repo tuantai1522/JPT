@@ -1,19 +1,19 @@
-﻿using JPT.UseCases.Features.Users.Users.RefreshToken;
+﻿using JPT.UseCases.Features.Users.Users.RenewAccessToken;
 using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
 
 namespace JPT.Web.Endpoints.Users.Users;
 
-internal sealed class RefreshToken : IEndpoint
+internal sealed class RenewAccessToken : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("users/refresh-token", async (
+        app.MapGet("users/renew-access-token", async (
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var query = new RefreshTokenQuery();
+                var query = new RenewAccessTokenQuery();
 
                 var result = await mediator.Send(query, cancellationToken);
 

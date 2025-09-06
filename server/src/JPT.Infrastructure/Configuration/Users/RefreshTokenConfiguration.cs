@@ -10,5 +10,10 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
     {
         // Rename to snake case
         builder.ToTable("refresh_tokens");
+        
+        builder.Property(p => p.Token).IsRequired();
+        builder.Property(p => p.Token).HasMaxLength(1024);
+        
+        builder.Property(c => c.Id).ValueGeneratedNever();
     }
 }

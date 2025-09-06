@@ -229,10 +229,15 @@ public sealed class User : AggregateRoot, IDateTracking
         _refreshTokens.Add(RefreshToken.Create(token, Id, expiredAt));
     }
 
-    public void UpdateExpiredAtOfRefreshToken(string token, DateTime expiredAt)
+    public void UpdateRefreshToken(Guid refreshTokenId, string token, DateTime? expiredAt)
     {
-        var refreshToken = _refreshTokens.FirstOrDefault(currentToken => currentToken.Token == token);
+        var refreshToken = _refreshTokens.FirstOrDefault(currentToken => currentToken.Id == refreshTokenId);
 
-        refreshToken?.UpdateExpiredAt(expiredAt);
+        if (expiredAt.HasValue)
+        {
+            refreshToken?.UpdateExpiredAt(expiredAt.Value);
+        }
+        
+        refreshToken?.UpdateToken(token);
     }
 }

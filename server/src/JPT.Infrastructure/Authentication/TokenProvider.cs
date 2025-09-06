@@ -1,5 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using JPT.Core.Features.Users;
 using JPT.UseCases.Abstractions.Authentication;
@@ -40,60 +40,9 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
         return token;
     }
 
-    public string CreateRefreshToken(User user)
+    public string CreateRefreshToken()
     {
-        string refreshTokenKey = configuration["JwtOptions:RefreshTokenKey"]!;
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshTokenKey));
-
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(
-            [
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Todo: for revoke token
-            ]),
-            Expires = DateTime.UtcNow.AddMinutes(configuration.GetValue<int>("JwtOptions:ExpiredRefreshToken")),
-            SigningCredentials = credentials,
-            Issuer = configuration["JwtOptions:Issuer"],
-            Audience = configuration["JwtOptions:Audience"]
-        };
-
-        var handler = new JsonWebTokenHandler();
-
-        string token = handler.CreateToken(tokenDescriptor);
-
-        return token;
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
     }
 
-    public ClaimsPrincipal? VerifyRefreshToken(string token)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        
-        try
-        {
-            return handler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = configuration["JwtOptions:Issuer"],
-                ValidAudience = configuration["JwtOptions:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtOptions:RefreshTokenKey"]!)),
-                ClockSkew = TimeSpan.Zero
-            }, out _);
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    public string GetUserIdFromClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
-    {
-        return claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)!;
-    }
 }
