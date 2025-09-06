@@ -2,8 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { AuthContext } from "../contexts/useAuth";
 import { api } from "../../../lib/utils/api";
 import { API_PATHS } from "../../shared/utils/apiPaths";
-import type { GetCurrentUserResponse } from "../../shared/types/users/getCurrentUser.types";
-import type { RefreshTokenResponse } from "../../shared/types/users/refreshToken.types";
+import type { RenewAccessTokenResponse } from "../../shared/types/users/renewToken.types";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>();
@@ -11,12 +10,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const response = await api.get<GetCurrentUserResponse>(
-          API_PATHS.USERS.GET_CURRENT_USER
+        const response = await api.get<RenewAccessTokenResponse>(
+          API_PATHS.USERS.RENEW_TOKEN
         );
         setToken(response?.data?.token);
       } catch {
-        setToken(undefined);
+        setToken(null);
       }
     };
 
@@ -46,17 +45,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (error.response.status === 401) {
           try {
-            const response = await api.get<RefreshTokenResponse>(
-              API_PATHS.USERS.REFRESH_TOKEN
+            const response = await api.get<RenewAccessTokenResponse>(
+              API_PATHS.USERS.RENEW_TOKEN
             );
             setToken(response?.data?.token);
 
-            originalRequest.headers.Authorization = `Bearer ${token}`;
+            originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
             originalRequest.__retry = true;
 
             return api(originalRequest);
           } catch {
-            setToken(undefined);
+            setToken(null);
           }
         }
 
@@ -67,7 +66,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       api.interceptors.response.eject(refreshInterceptors);
     };
-  }, [token]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ token, setToken }}>
