@@ -4,5 +4,5 @@ export type GetCurrentUserResponse = {
   id: string;
   firstName: string;
   role: UserRole;
-  token: string;
+  avatarUrl?: string;
 };
