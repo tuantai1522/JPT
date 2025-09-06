@@ -3,7 +3,7 @@ import { cn } from "../../../lib/utils/cn";
 
 type NavigationItemProps = {
   to: string;
-  icon: React.ElementType;
+  icon: React.ReactNode;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 export default function NavigationItem({
@@ -14,8 +14,6 @@ export default function NavigationItem({
 }: NavigationItemProps) {
   const base =
     "w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 gap-3";
-
-  const Icon = icon;
 
   return (
     <Link
@@ -29,11 +27,13 @@ export default function NavigationItem({
     >
       {({ isActive }) => (
         <>
-          <Icon
+          <span
             className={`h-5 w-5 flex-shrink-0 ${
               isActive ? "text-blue-700 w-5 h-5" : "text-gray-400 w-5 h-5"
             }`}
-          />
+          >
+            {icon}
+          </span>
 
           <span
             className={`ml-2 truncate ${
