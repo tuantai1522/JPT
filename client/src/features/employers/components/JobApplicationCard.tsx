@@ -1,0 +1,29 @@
+import { Clock } from "lucide-react";
+import { formatTime } from "../../shared/utils/helpers";
+
+export default function JobApplicationCard() {
+  return (
+    <>
+      <div className="flex items-center justify-between p-4 rounded-xl border border-gray-300 transition-colors">
+        <div className="flex items-center space-x-4">
+          <div className="h-10 w-10 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-xl flex items-center justify-center">
+            <span className="text-white font-medium text-sm">
+              {"John"
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </span>
+          </div>
+          <div>
+            <h4 className="text-[15px] font-medium text-gray-900">John</h4>
+            <p className="text-xs text-gray-500">Backend Developer</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-3">
+          <Clock className="h-3 w-3 mr-1" />
+          {formatTime("1728144200000")}
+        </div>
+      </div>
+    </>
+  );
+}
