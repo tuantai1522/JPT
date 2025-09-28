@@ -1,19 +1,19 @@
-using JPT.UseCases.Features.Jobs.GetStatisticJobs;
+using JPT.UseCases.Features.Users.JobApplications.GetRecentJobApplications;
 using JPT.Web.Extensions;
 using JPT.Web.Infrastructure;
 using MediatR;
 
 namespace JPT.Web.Endpoints.Jobs;
 
-internal sealed class GetStatisticJobs : IEndpoint
+internal sealed class GetRecentJobApplications : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("jobs/get-statistic-jobs", async (
+        app.MapGet("jobs/get-recent-job-applications", async (
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var query = new GetStatisticJobsQuery();
+                var query = new GetRecentJobApplicationsQuery();
 
                 var result = await mediator.Send(query, cancellationToken);
 

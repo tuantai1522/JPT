@@ -15,4 +15,8 @@ public static class JobErrors
     public static Error JobApplicationNotFound(Guid jobApplication) => Error.NotFound(
         "Jobs.NotFound",
         $"The job application with the Id = '{jobApplication}' was not found");
+    
+    public static Error UnauthorizedJobSeeker => Error.NotFound(
+        "Jobs.UnauthorizedJobSeeker",
+        $"Job seeker doesn't have permission to access this resource.");
 }
