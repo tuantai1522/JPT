@@ -3,6 +3,7 @@ using JPT.Core.Features.Jobs;
 using JPT.Core.Features.Users;
 using JPT.UseCases.Abstractions.Authentication;
 using JPT.UseCases.Abstractions.Data;
+using JPT.UseCases.Pagination;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using File = JPT.Core.Features.Files.File;
@@ -12,9 +13,9 @@ namespace JPT.UseCases.Features.Users.JobApplications.GetRecentJobApplications;
 public class GetRecentJobApplicationsQueryHandler(
     IUserRepository userRepository,
     IUserProvider userProvider,
-    IApplicationDbContext dbContext) : IRequestHandler<GetRecentJobApplicationsQuery, Result<IReadOnlyList<GetRecentJobApplicationsResponse>>>
+    IApplicationDbContext dbContext) : IRequestHandler<GetRecentJobApplicationsQuery, Result<PaginationResponse<GetRecentJobApplicationsResponse>>>
 {
-    public async Task<Result<IReadOnlyList<GetRecentJobApplicationsResponse>>> Handle(GetRecentJobApplicationsQuery query, CancellationToken cancellationToken)
+    public async Task<Result<PaginationResponse<GetRecentJobApplicationsResponse>>> Handle(GetRecentJobApplicationsQuery query, CancellationToken cancellationToken)
     {
         var userId = userProvider.UserId;
         
@@ -22,15 +23,15 @@ public class GetRecentJobApplicationsQueryHandler(
 
         if (user is null || user.Role == UserRole.JobSeeker)
         {
-            return Result.Failure<IReadOnlyList<GetRecentJobApplicationsResponse>>(JobErrors.UnauthorizedJobSeeker);
+            return Result.Failure<PaginationResponse<GetRecentJobApplicationsResponse>>(JobErrors.UnauthorizedJobSeeker);
         }
 
-        var result = await BuildResponse(userId, cancellationToken);
+        var result = await BuildResponse(userId, query.Page, query.PageSize, cancellationToken);
 
         return Result.Success(result);
     }
 
-    private async Task<IReadOnlyList<GetRecentJobApplicationsResponse>> BuildResponse(Guid userId, CancellationToken cancellationToken)
+    private async Task<PaginationResponse<GetRecentJobApplicationsResponse>> BuildResponse(Guid userId, int page, int pageSize, CancellationToken cancellationToken)
     {
         var query =
             from company in dbContext.Set<Company>().AsNoTracking()
@@ -61,7 +62,6 @@ public class GetRecentJobApplicationsQueryHandler(
                 ja.AppliedAt
             );
 
-        var result = await query.ToListAsync(cancellationToken);
-        return result;
+        return await PaginationResponse<GetRecentJobApplicationsResponse>.CreateAsync(query, page, pageSize, cancellationToken);
     }
 }
